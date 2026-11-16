@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens.
+ * Components use semantic names (bg-primary, text-gold...). A template sets the
+ * --tpl-* values on its root element via `data-template`, so a new design is
+ * mostly a new block of variables below.
+ */
+:root,
+[data-template="royal-romance"] {
+  --tpl-deep: #35081a;
+  --tpl-primary: #5b1224;
+  --tpl-primary-soft: #7b2038;
+  --tpl-paper: #f8f0e3;
+  --tpl-paper-2: #efe1ca;
+  --tpl-ink: #2a1118;
+  --tpl-muted: #6d5750;
+  --tpl-gold: #c9a45c;
+  --tpl-gold-light: #ecd6a0;
+  --tpl-gold-deep: #9a7632;
+  --damask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96' fill='none' stroke='%23c9a45c' stroke-opacity='.17' stroke-width='1'%3E%3Cpath d='M48 8c11 14 11 26 0 40C37 34 37 22 48 8ZM48 88c11-14 11-26 0-40-11 14-11 26 0 40ZM8 48c14-11 26-11 40 0-14 11-26 11-40 0ZM88 48c-14-11-26-11-40 0 14 11 26 11 40 0Z'/%3E%3Ccircle cx='48' cy='48' r='3'/%3E%3Cpath d='M0 0l48 48L96 0M0 96l48-48 48 48' stroke-opacity='.06'/%3E%3Ccircle cx='0' cy='0' r='2.5'/%3E%3Ccircle cx='96' cy='0' r='2.5'/%3E%3Ccircle cx='0' cy='96' r='2.5'/%3E%3Ccircle cx='96' cy='96' r='2.5'/%3E%3C/svg%3E");
+}
+
+@theme inline {
+  --color-deep: var(--tpl-deep);
+  --color-primary: var(--tpl-primary);
+  --color-primary-soft: var(--tpl-primary-soft);
+  --color-paper: var(--tpl-paper);
+  --color-paper-2: var(--tpl-paper-2);
+  --color-ink: var(--tpl-ink);
+  --color-muted: var(--tpl-muted);
+  --color-gold: var(--tpl-gold);
+  --color-gold-light: var(--tpl-gold-light);
+  --color-gold-deep: var(--tpl-gold-deep);
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-script: var(--font-pinyon), "Pinyon Script", cursive;
+  --font-sans: var(--font-jost), "Jost", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-sway: sway 11s ease-in-out infinite;
+  --animate-shimmer: shimmer 3.6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.6s ease-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -10px, 0) rotate(1.5deg); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.6deg); }
+  50% { transform: rotate(1.6deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.55; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -12vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.85; }
+  90% { opacity: 0.7; }
+  100% { transform: translate3d(var(--drift, 40px), 108vh, 0) rotate(520deg); opacity: 0; }
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--tpl-deep);
+  color: var(--tpl-ink);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--tpl-gold);
+  color: var(--tpl-deep);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Ornamental utilities                                                */
+/* ------------------------------------------------------------------ */
+
+.text-gold-gradient {
+  background-image: linear-gradient(115deg, #a9812f 0%, #ecd6a0 28%, #c9a45c 48%, #f6e7bd 62%, #a9812f 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gold-gradient {
+  background-image: linear-gradient(115deg, #a9812f 0%, #ecd6a0 28%, #c9a45c 50%, #f6e7bd 66%, #a9812f 100%);
+  background-size: 220% 100%;
+}
+
+/* Fine lattice of quatrefoils for burgundy surfaces. */
+.bg-damask {
+  background-image: var(--damask);
+  background-size: 96px 96px;
+}
+
+/* Same lattice, tuned for ivory surfaces. */
+.bg-damask-light {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96' fill='none' stroke='%239a7632' stroke-opacity='.10' stroke-width='1'%3E%3Cpath d='M48 8c11 14 11 26 0 40C37 34 37 22 48 8ZM48 88c11-14 11-26 0-40-11 14-11 26 0 40ZM8 48c14-11 26-11 40 0-14 11-26 11-40 0ZM88 48c-14-11-26-11-40 0 14 11 26 11 40 0Z'/%3E%3Ccircle cx='48' cy='48' r='3'/%3E%3C/svg%3E");
+  background-size: 96px 96px;
+}
+
+/* Paper grain overlay. */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* Keyboard focus that suits both dark and light surfaces. */
+:focus-visible {
+  outline: 2px solid var(--tpl-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
