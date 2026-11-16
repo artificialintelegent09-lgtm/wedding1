@@ -19,9 +19,9 @@ const rise: Variants = {
 };
 
 export function Hero() {
-  const { data, copy, opened } = useInvitation();
+  const { data, copy, opened, locale } = useInvitation();
   const { bride, groom } = data.couple;
-  const date = formatParts(data.weddingDate, data.locale, data.events[0]?.timeZone ?? "UTC");
+  const date = formatParts(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC");
   const month = String(new Date(data.weddingDate).getUTCMonth() + 1).padStart(2, "0");
   const state = opened ? "show" : "hidden";
 

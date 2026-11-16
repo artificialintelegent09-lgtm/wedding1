@@ -6,9 +6,17 @@ import type { InvitationData } from "@/types/invitation";
  * To create a real invitation: copy this file, change the values, point the
  * images at real photos in /public, then register it in ../registry.ts.
  * All names, numbers and addresses below are fictional sample content.
+ *
+ * Text fields accept either one string (shown in every language) or
+ * `{ id: "...", en: "..." }` variants. `locale` is the language guests see
+ * first; they can switch via the ID/EN toggle.
+ *
+ * Demo photos live in /public/images/amelia-rafael (sources: Pexels, free
+ * license — see CREDITS.txt in that folder). Replace them with the couple's
+ * own photos and update width/height to the real pixel sizes.
  */
 const img = (name: string, w: number, h: number, alt: string, focal?: string) => ({
-  src: `/images/demo/${name}.jpg`,
+  src: `/images/amelia-rafael/${name}.webp`,
   width: w,
   height: h,
   alt,
@@ -18,12 +26,12 @@ const img = (name: string, w: number, h: number, alt: string, focal?: string) =>
 export const amelia_rafael: InvitationData = {
   slug: "amelia-rafael",
   templateId: "royal-romance",
-  locale: "en",
+  locale: "id",
   meta: {
-    title: "Amelia & Rafael — Wedding Invitation",
+    title: "Amelia & Rafael — Undangan Pernikahan",
     description:
-      "Together with their families, Amelia and Rafael joyfully invite you to celebrate their wedding on Saturday, 20 March 2027.",
-    ogImage: "/images/demo/og.jpg",
+      "Dengan penuh sukacita, Amelia & Rafael mengundang Anda untuk hadir dan memberikan doa restu pada hari pernikahan mereka, Sabtu, 20 Maret 2027.",
+    ogImage: "/images/amelia-rafael/og.jpg",
   },
   couple: {
     monogram: "A&R",
@@ -31,35 +39,39 @@ export const amelia_rafael: InvitationData = {
       role: "bride",
       nickname: "Amelia",
       fullName: "Amelia Putri Wijaya",
-      childOf: "The eldest daughter of",
-      fatherName: "Mr. Hendra Wijaya",
-      motherName: "Mrs. Sari Dewi Wijaya",
-      photo: img("bride", 1000, 1300, "Portrait of the bride", "50% 40%"),
+      childOf: { id: "Putri pertama dari", en: "The eldest daughter of" },
+      fatherName: "Bpk. Hendra Wijaya",
+      motherName: "Ibu Sari Dewi Wijaya",
+      photo: img("bride", 1200, 1324, "Amelia dalam kebaya pengantin putih berjalan menuju pelaminan", "50% 38%"),
       instagram: "amelia.wijaya",
     },
     groom: {
       role: "groom",
       nickname: "Rafael",
       fullName: "Rafael Adhitama Pratama",
-      childOf: "The second son of",
-      fatherName: "Mr. Bambang Pratama",
-      motherName: "Mrs. Lestari Pratama",
-      photo: img("groom", 1000, 1300, "Portrait of the groom", "50% 40%"),
+      childOf: { id: "Putra kedua dari", en: "The second son of" },
+      fatherName: "Bpk. Bambang Pratama",
+      motherName: "Ibu Lestari Pratama",
+      photo: img("groom", 880, 1350, "Rafael dalam jas pengantin putih memegang buku nikah", "45% 30%"),
       instagram: "rafael.pratama",
     },
   },
   weddingDate: "2027-03-20T08:00:00+07:00",
   images: {
-    cover: img("cover", 900, 1200, "Golden light through an arched doorway"),
-    hero: img("hero", 1600, 2000, "The couple beneath a golden arch", "50% 45%"),
-    closing: img("closing", 1800, 1200, "Golden hour glow with soft florals"),
+    cover: img("cover", 1000, 1136, "Buku nikah di atas kain beludru burgundy"),
+    hero: img("hero", 1400, 2100, "Rafael mencium kening Amelia di depan pelaminan", "50% 38%"),
+    closing: img("closing", 1920, 1280, "Amelia memandang pelaminan berhias tirai burgundy dan bunga", "50% 42%"),
   },
   intro: {
-    quote:
-      "And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them, and He placed between you affection and mercy.",
-    quoteSource: "Ar-Rum 30:21",
-    message:
-      "With the blessing of God and the love of our families, we joyfully invite you to witness and celebrate the beginning of our new life together.",
+    quote: {
+      id: "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.",
+      en: "And among His signs is that He created for you mates from among yourselves, that you may find tranquility in them, and He placed between you affection and mercy.",
+    },
+    quoteSource: { id: "Q.S. Ar-Rum: 21", en: "Ar-Rum 30:21" },
+    message: {
+      id: "Dengan memohon rahmat dan ridha Tuhan Yang Maha Esa serta restu keluarga, kami mengundang Bapak/Ibu/Saudara/i untuk menyaksikan dan turut berbahagia di awal perjalanan hidup baru kami.",
+      en: "With the blessing of God and the love of our families, we joyfully invite you to witness and celebrate the beginning of our new life together.",
+    },
   },
   events: [
     {
@@ -79,13 +91,16 @@ export const amelia_rafael: InvitationData = {
           "https://www.google.com/maps/search/?api=1&query=Hotel+Indonesia+Kempinski+Jakarta",
         mapsQuery: "Hotel Indonesia Kempinski Jakarta",
       },
-      note: "Immediate family and close relatives.",
-      dressCode: "Soft ivory & champagne",
+      note: {
+        id: "Dihadiri keluarga inti dan kerabat dekat.",
+        en: "Immediate family and close relatives.",
+      },
+      dressCode: { id: "Ivory lembut & champagne", en: "Soft ivory & champagne" },
     },
     {
       id: "reception",
       kind: "reception",
-      title: "Wedding Reception",
+      title: { id: "Resepsi Pernikahan", en: "Wedding Reception" },
       startsAt: "2027-03-20T18:00:00+07:00",
       endsAt: "2027-03-20T21:30:00+07:00",
       timeZone: "Asia/Jakarta",
@@ -99,50 +114,67 @@ export const amelia_rafael: InvitationData = {
           "https://www.google.com/maps/search/?api=1&query=Hotel+Indonesia+Kempinski+Jakarta",
         mapsQuery: "Hotel Indonesia Kempinski Jakarta",
       },
-      note: "Dinner and celebration to follow.",
-      dressCode: "Black tie · Burgundy & gold",
+      note: {
+        id: "Dilanjutkan dengan jamuan makan malam.",
+        en: "Dinner and celebration to follow.",
+      },
+      dressCode: { id: "Formal · Burgundy & emas", en: "Black tie · Burgundy & gold" },
     },
   ],
   gallery: [
-    { ...img("gallery-1", 1000, 1333, "Light falling through an arch at dusk"), layout: "tall" },
-    { ...img("gallery-2", 1400, 1000, "Ivory arch in soft morning light"), layout: "wide" },
-    { ...img("gallery-3", 1000, 1000, "Burgundy and blush roses in bloom"), layout: "square" },
-    { ...img("gallery-4", 1000, 1400, "Blush tones and roses"), layout: "tall" },
-    { ...img("gallery-5", 1500, 1000, "Golden hour bokeh"), layout: "wide" },
-    { ...img("gallery-6", 1000, 1400, "Deep burgundy archway"), layout: "tall" },
-    { ...img("gallery-7", 1000, 1000, "Blush rose on ivory"), layout: "square" },
-    { ...img("gallery-8", 1400, 1000, "Garden flowers in soft focus"), layout: "wide" },
-    { ...img("gallery-9", 1000, 1333, "Candlelit arch in wine tones"), layout: "tall" },
+    img("gallery-1", 1600, 1067, "Amelia dan Rafael memegang buku nikah di pelaminan"),
+    img("gallery-2", 1200, 1800, "Senyum bahagia saat penandatanganan buku nikah"),
+    img("gallery-3", 1200, 1200, "Pemasangan cincin pada ijab kabul"),
+    img("gallery-4", 1600, 1067, "Amelia menghampiri Rafael di pelaminan", "50% 40%"),
+    img("gallery-5", 1600, 1067, "Dekorasi taman dengan untaian lampu di kala senja"),
+    img("gallery-6", 1600, 1068, "Doa bersama seusai akad nikah"),
+    img("gallery-7", 1200, 1200, "Sepasang buku nikah merah dan hijau"),
+    img("gallery-8", 1170, 1467, "Rangkaian bunga di area resepsi"),
+    img("gallery-9", 1600, 1067, "Momen akad nikah disaksikan keluarga"),
   ],
   story: [
     {
-      date: "June 2018",
-      title: "The First Hello",
-      body: "A mutual friend's birthday dinner, a shared love of old jazz records, and a conversation that somehow lasted until the restaurant closed.",
-      image: img("story-1", 900, 900, "Ivory arch in morning light"),
+      date: { id: "Juni 2018", en: "June 2018" },
+      title: { id: "Salam Pertama", en: "The First Hello" },
+      body: {
+        id: "Sebuah acara ulang tahun sahabat, kesukaan yang sama pada musik jazz lawas, dan percakapan yang tanpa terasa berlangsung hingga restoran tutup.",
+        en: "A mutual friend's birthday dinner, a shared love of old jazz records, and a conversation that somehow lasted until the restaurant closed.",
+      },
+      image: img("story-1", 1000, 1000, "Momen hangat di awal perjalanan Amelia dan Rafael"),
     },
     {
-      date: "December 2020",
-      title: "Our First Journey",
-      body: "Rain-soaked streets, missed trains and a hundred laughs. It was the trip that taught us home isn't a place, it's each other.",
-      image: img("story-2", 900, 900, "Golden dusk bokeh"),
+      date: { id: "Desember 2020", en: "December 2020" },
+      title: { id: "Perjalanan Pertama", en: "Our First Journey" },
+      body: {
+        id: "Jalanan basah oleh hujan, kereta yang tertinggal, dan tawa yang tak ada habisnya. Perjalanan itu mengajarkan kami bahwa rumah bukan sebuah tempat, melainkan satu sama lain.",
+        en: "Rain-soaked streets, missed trains and a hundred laughs. It was the trip that taught us home isn't a place, it's each other.",
+      },
+      image: img("story-2", 1000, 1000, "Amelia dan Rafael berjalan berdua di jalan setapak yang rindang"),
     },
     {
-      date: "September 2025",
-      title: "The Proposal",
-      body: "Under a canopy of fairy lights, with a ring hidden inside a book of our favourite poems, Rafael asked the question. Amelia said yes before he finished.",
-      image: img("story-3", 900, 900, "Soft roses in bloom"),
+      date: { id: "September 2025", en: "September 2025" },
+      title: { id: "Lamaran", en: "The Proposal" },
+      body: {
+        id: "Di bawah untaian lampu senja, dengan cincin yang disembunyikan di dalam buku puisi kesayangan kami, Rafael mengajukan pertanyaan itu. Amelia menjawab ya bahkan sebelum kalimatnya selesai.",
+        en: "Under a canopy of fairy lights, with a ring hidden inside a book of our favourite poems, Rafael asked the question. Amelia said yes before he finished.",
+      },
+      image: img("story-3", 1000, 1000, "Taman dengan untaian lampu tempat Rafael melamar Amelia"),
     },
     {
-      date: "March 2027",
-      title: "Forever Begins",
-      body: "Surrounded by the people we love most, we step into the next chapter, and we would be honoured to have you beside us.",
-      image: img("story-4", 900, 900, "Burgundy archway"),
+      date: { id: "Maret 2027", en: "March 2027" },
+      title: { id: "Selamanya Dimulai", en: "Forever Begins" },
+      body: {
+        id: "Dikelilingi orang-orang terkasih, kami melangkah ke babak berikutnya — dan menjadi kehormatan bagi kami bila Anda berkenan mendampingi.",
+        en: "Surrounded by the people we love most, we step into the next chapter, and we would be honoured to have you beside us.",
+      },
+      image: img("story-4", 1000, 1000, "Amelia dan Rafael merayakan hari bahagia di pelaminan"),
     },
   ],
   gift: {
-    message:
-      "Your presence is the greatest gift. Should you wish to bless us further, you may send a gift through the accounts below.",
+    message: {
+      id: "Kehadiran Anda adalah hadiah terindah bagi kami. Namun apabila Anda ingin memberikan tanda kasih, kami menyediakan rekening berikut.",
+      en: "Your presence is the greatest gift. Should you wish to bless us further, you may send a gift through the accounts below.",
+    },
     accounts: [
       { bank: "BCA", accountNumber: "1234567890", accountHolder: "Amelia Putri Wijaya" },
       { bank: "Bank Mandiri", accountNumber: "1230009876543", accountHolder: "Rafael Adhitama Pratama" },
@@ -157,7 +189,10 @@ export const amelia_rafael: InvitationData = {
     whatsappNumber: "6281234567890",
     maxGuests: 4,
     deadline: "2027-03-01",
-    message: "Your confirmation helps us prepare a seat and a place setting for you.",
+    message: {
+      id: "Konfirmasi Anda sangat membantu kami menyiapkan tempat dan jamuan terbaik untuk Anda.",
+      en: "Your confirmation helps us prepare a seat and a place setting for you.",
+    },
   },
   wishes: {
     // Optional: an https link to your own Google Form (or similar). When set, the guestbook
@@ -170,34 +205,40 @@ export const amelia_rafael: InvitationData = {
     // remove the flag, or the whole entry, when you replace them with real messages.
     featured: [
       {
-        name: "Aunt Maya & Uncle Dimas",
-        message: "May your home be filled with laughter, patience and endless cups of tea. We are so happy for you both.",
+        name: "Tante Maya & Om Dimas",
+        message:
+          "Semoga rumah kalian selalu dipenuhi tawa, kesabaran, dan teh hangat yang tak pernah habis. Kami turut berbahagia untuk kalian berdua.",
         date: "2027-01-12",
         sample: true,
       },
       {
         name: "Nadia Kusuma",
-        message: "Amelia, you glow every time you speak of Rafael. Wishing you a lifetime of exactly that. Can't wait to dance!",
+        message:
+          "Amelia, wajahmu selalu berbinar setiap bercerita tentang Rafael. Semoga seumur hidupmu dipenuhi hal yang sama. Sampai jumpa di lantai dansa!",
         date: "2027-01-15",
         sample: true,
       },
       {
         name: "Reza & Tika",
-        message: "Congratulations, you two! Here's to adventures, quiet Sunday mornings and growing old together.",
+        message:
+          "Selamat, kalian berdua! Untuk petualangan baru, pagi-pagi yang tenang, dan menua bersama.",
         date: "2027-01-20",
         sample: true,
       },
       {
         name: "Pak Hendro",
-        message: "Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallah untuk kalian berdua.",
+        message:
+          "Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallah untuk kalian berdua.",
         date: "2027-02-02",
         sample: true,
       },
     ],
   },
   closing: {
-    message:
-      "It is our honour to share this day with you. Your presence, your prayers and your warm wishes will be a treasured part of our story.",
-    signature: "With love & gratitude",
+    message: {
+      id: "Merupakan kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir. Doa restu Anda adalah bagian paling berharga dari kisah kami.",
+      en: "It is our honour to share this day with you. Your presence, your prayers and your warm wishes will be a treasured part of our story.",
+    },
+    signature: { id: "Dengan cinta & rasa syukur", en: "With love & gratitude" },
   },
 };

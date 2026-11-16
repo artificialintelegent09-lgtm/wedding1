@@ -19,7 +19,7 @@ function openWhatsApp(url: string) {
 }
 
 export function RsvpForm() {
-  const { data, copy, guestName } = useInvitation();
+  const { data, copy, guestName, locale } = useInvitation();
   const channel = getRsvpChannel(data);
   const uid = useId();
 
@@ -51,7 +51,7 @@ export function RsvpForm() {
       couple: `${bride.nickname} & ${groom.nickname}`,
       name: clean(name),
       attending: attendance === "attending",
-      date: formatLongDate(data.weddingDate, data.locale, data.events[0]?.timeZone ?? "UTC"),
+      date: formatLongDate(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC"),
       guests,
       note: clean(note),
     });
@@ -201,7 +201,7 @@ export function RsvpForm() {
       </p>
       {data.rsvp?.deadline && (
         <p className="mt-2 text-center text-xs font-light tracking-wide text-muted">
-          {copy.rsvp.deadline(formatShortDate(data.rsvp.deadline, data.locale))}
+          {copy.rsvp.deadline(formatShortDate(data.rsvp.deadline, locale))}
         </p>
       )}
     </form>

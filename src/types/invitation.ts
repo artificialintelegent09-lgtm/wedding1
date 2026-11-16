@@ -9,6 +9,14 @@
 
 export type Locale = "en" | "id";
 
+/**
+ * Text that may differ per language. A plain string is shown as-is for every
+ * locale; an object provides per-locale variants (missing ones fall back via
+ * lt() in lib/i18n). Personal data (names, dates, numbers, addresses) stays a
+ * plain string and never changes with the language.
+ */
+export type LocalizedText = string | Partial<Record<Locale, string>>;
+
 /** Identifier of a visual design in `src/templates/registry.ts`. */
 export type TemplateId = "royal-romance";
 
@@ -27,7 +35,7 @@ export interface Person {
   nickname: string;
   fullName: string;
   /** Short line about the person, e.g. "The eldest daughter of". */
-  childOf: string;
+  childOf: LocalizedText;
   fatherName: string;
   motherName: string;
   photo: ImageAsset;
@@ -50,7 +58,7 @@ export interface Venue {
 export interface WeddingEvent {
   id: string;
   kind: "akad" | "reception" | "ceremony" | "other";
-  title: string;
+  title: LocalizedText;
   /** ISO 8601 with a UTC offset, e.g. "2027-03-20T08:00:00+07:00". */
   startsAt: string;
   endsAt: string;
@@ -59,8 +67,8 @@ export interface WeddingEvent {
   /** IANA zone used to format the date/time for display. */
   timeZone: string;
   venue: Venue;
-  note?: string;
-  dressCode?: string;
+  note?: LocalizedText;
+  dressCode?: LocalizedText;
 }
 
 export interface BankAccount {
@@ -70,9 +78,9 @@ export interface BankAccount {
 }
 
 export interface StoryMoment {
-  date: string;
-  title: string;
-  body: string;
+  date: LocalizedText;
+  title: LocalizedText;
+  body: LocalizedText;
   image?: ImageAsset;
 }
 
@@ -97,6 +105,7 @@ export interface InvitationData {
   /** URL segment: `/{slug}`. Also the key under which RSVPs and wishes are stored. */
   slug: string;
   templateId: TemplateId;
+  /** Language shown on first open; guests can switch at runtime. */
   locale: Locale;
   meta: {
     title: string;
@@ -118,15 +127,15 @@ export interface InvitationData {
   };
   intro: {
     /** Short blessing or verse shown after the hero. */
-    quote: string;
-    quoteSource?: string;
-    message: string;
+    quote: LocalizedText;
+    quoteSource?: LocalizedText;
+    message: LocalizedText;
   };
   events: WeddingEvent[];
   gallery: GalleryImage[];
   story?: StoryMoment[];
   gift?: {
-    message: string;
+    message: LocalizedText;
     accounts: BankAccount[];
     /** Optional physical delivery address for gifts. */
     address?: { recipient: string; address: string };
@@ -142,7 +151,7 @@ export interface InvitationData {
     maxGuests: number;
     /** ISO date (YYYY-MM-DD). Shown as a reminder only; nothing enforces it. */
     deadline?: string;
-    message?: string;
+    message?: LocalizedText;
   };
   /**
    * Wishes are collected outside the site (there is no backend). Priority:
@@ -156,7 +165,7 @@ export interface InvitationData {
     featured?: FeaturedWish[];
   };
   closing: {
-    message: string;
-    signature: string;
+    message: LocalizedText;
+    signature: LocalizedText;
   };
 }

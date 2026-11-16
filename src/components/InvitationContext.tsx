@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 import type { Copy } from "@/lib/i18n";
-import type { InvitationData } from "@/types/invitation";
+import type { InvitationData, Locale } from "@/types/invitation";
 
 interface InvitationContextValue {
   data: InvitationData;
@@ -11,6 +11,9 @@ interface InvitationContextValue {
   opened: boolean;
   /** Personalised guest name from `?to=`, or "" when absent. */
   guestName: string;
+  /** Active language; switching it re-renders every section without a reload. */
+  locale: Locale;
+  setLocale: (locale: Locale) => void;
 }
 
 export const InvitationContext = createContext<InvitationContextValue | null>(null);

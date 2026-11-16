@@ -1,5 +1,4 @@
 import { getRsvpChannel, showWishes } from "@/lib/contact";
-import { getCopy } from "@/lib/i18n";
 import type { InvitationData } from "@/types/invitation";
 import { Shell } from "./Shell";
 import { Closing } from "./sections/Closing";
@@ -20,21 +19,19 @@ import { Wishes } from "./sections/Wishes";
  * sections without touching any section's code.
  */
 export function RoyalRomanceTemplate({ data }: { data: InvitationData }) {
-  const props = { data, copy: getCopy(data.locale) };
-
   return (
     <Shell data={data}>
       <Hero />
-      <Intro {...props} />
-      <Couple {...props} />
-      <Events {...props} />
-      <Location {...props} />
+      <Intro />
+      <Couple />
+      <Events />
+      <Location />
       <Gallery />
       {data.story && data.story.length > 0 && <Story />}
-      {data.gift && <Gift {...props} />}
-      {getRsvpChannel(data) && <Rsvp {...props} />}
-      {showWishes(data) && <Wishes {...props} />}
-      <Closing {...props} />
+      {data.gift && <Gift />}
+      {getRsvpChannel(data) && <Rsvp />}
+      {showWishes(data) && <Wishes />}
+      <Closing />
     </Shell>
   );
 }

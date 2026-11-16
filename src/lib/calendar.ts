@@ -1,4 +1,5 @@
-import type { WeddingEvent } from "@/types/invitation";
+import { lt } from "@/lib/i18n";
+import type { Locale, WeddingEvent } from "@/types/invitation";
 
 /** `2027-03-20T08:00:00+07:00` → `20270320T010000Z` */
 function toUtcStamp(iso: string): string {
@@ -9,13 +10,13 @@ function location(event: WeddingEvent): string {
   return `${event.venue.name}, ${event.venue.address}`;
 }
 
-export function googleCalendarUrl(event: WeddingEvent, headline: string): string {
+export function googleCalendarUrl(event: WeddingEvent, headline: string, locale: Locale): string {
   const params = new URLSearchParams({
     action: "TEMPLATE",
-    text: `${headline} · ${event.title}`,
+    text: `${headline} · ${lt(event.title, locale)}`,
     dates: `${toUtcStamp(event.startsAt)}/${toUtcStamp(event.endsAt)}`,
     location: location(event),
-    details: [event.note, event.dressCode ? `Dress code: ${event.dressCode}` : ""]
+    details: [lt(event.note, locale), event.dressCode ? `Dress code: ${lt(event.dressCode, locale)}` : ""]
       .filter(Boolean)
       .join("\n"),
   });
@@ -42,7 +43,7 @@ function fold(line: string): string {
   return out.join("\r\n");
 }
 
-export function buildIcs(event: WeddingEvent, headline: string, slug: string): string {
+export function buildIcs(event: WeddingEvent, headline: string, slug: string, locale: Locale): string {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -54,9 +55,9 @@ export function buildIcs(event: WeddingEvent, headline: string, slug: string): s
     `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
     `DTSTART:${toUtcStamp(event.startsAt)}`,
     `DTEND:${toUtcStamp(event.endsAt)}`,
-    `SUMMARY:${escapeIcs(`${headline} · ${event.title}`)}`,
+    `SUMMARY:${escapeIcs(`${headline} · ${lt(event.title, locale)}`)}`,
     `LOCATION:${escapeIcs(location(event))}`,
-    `DESCRIPTION:${escapeIcs([event.note, event.dressCode ? `Dress code: ${event.dressCode}` : ""].filter(Boolean).join("\n"))}`,
+    `DESCRIPTION:${escapeIcs([lt(event.note, locale), event.dressCode ? `Dress code: ${lt(event.dressCode, locale)}` : ""].filter(Boolean).join("\n"))}`,
     `URL:${event.venue.mapsUrl}`,
     "END:VEVENT",
     "END:VCALENDAR",
@@ -64,8 +65,8 @@ export function buildIcs(event: WeddingEvent, headline: string, slug: string): s
   return `${lines.map(fold).join("\r\n")}\r\n`;
 }
 
-export function downloadIcs(event: WeddingEvent, headline: string, slug: string) {
-  const blob = new Blob([buildIcs(event, headline, slug)], { type: "text/calendar;charset=utf-8" });
+export function downloadIcs(event: WeddingEvent, headline: string, slug: string, locale: Locale) {
+  const blob = new Blob([buildIcs(event, headline, slug, locale)], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;

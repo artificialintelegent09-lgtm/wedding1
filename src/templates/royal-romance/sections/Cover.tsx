@@ -24,9 +24,9 @@ const item: Variants = {
  * one rich bloom cluster rests opposite, and on opening the whole card lifts away like a curtain.
  */
 export function Cover({ onOpen }: { onOpen: () => void }) {
-  const { data, copy, guestName } = useInvitation();
+  const { data, copy, guestName, locale } = useInvitation();
   const { bride, groom } = data.couple;
-  const date = formatParts(data.weddingDate, data.locale, data.events[0]?.timeZone ?? "UTC");
+  const date = formatParts(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC");
   const monthIndex = String(new Date(data.weddingDate).getUTCMonth() + 1).padStart(2, "0");
 
   return (

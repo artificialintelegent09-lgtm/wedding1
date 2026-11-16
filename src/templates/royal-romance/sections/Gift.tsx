@@ -1,15 +1,18 @@
+"use client";
+
 import { Gift as GiftIcon } from "lucide-react";
+import { useInvitation } from "@/components/InvitationContext";
 import { Reveal } from "@/components/motion/Reveal";
 import { CopyButton } from "@/components/ui/CopyButton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { lt, type Copy } from "@/lib/i18n";
 import type { BankAccount } from "@/types/invitation";
-import type { SectionProps } from "./types";
 
 /** Groups digits for readability: "1234567890" → "1234 5678 90". Copying still uses the raw number. */
 const spaced = (n: string) => n.replace(/\s+/g, "").replace(/(.{4})/g, "$1 ").trim();
 
 /** A place-card in the manner of printed stationery: fine double rule, didone numerals. */
-function BankCard({ account, copy }: { account: BankAccount; copy: SectionProps["copy"] }) {
+function BankCard({ account, copy }: { account: BankAccount; copy: Copy }) {
   return (
     <div className="surface surface-paper relative border border-primary/20 p-7 shadow-[0_30px_60px_-40px_rgba(74,15,28,0.6)] sm:p-9">
       <div className="pointer-events-none absolute inset-1.5 border border-gold/45" aria-hidden="true" />
@@ -33,7 +36,8 @@ function BankCard({ account, copy }: { account: BankAccount; copy: SectionProps[
   );
 }
 
-export function Gift({ data, copy }: SectionProps) {
+export function Gift() {
+  const { data, copy, locale } = useInvitation();
   const gift = data.gift;
   if (!gift) return null;
 
@@ -43,7 +47,7 @@ export function Gift({ data, copy }: SectionProps) {
         <SectionHeading eyebrow={copy.gift.eyebrow} title={copy.gift.title} index="06" />
 
         <Reveal className="mx-auto mt-8 max-w-xl text-center">
-          <p className="font-display text-xl font-medium italic leading-relaxed text-ink/85 sm:text-2xl">{gift.message}</p>
+          <p className="font-display text-xl font-medium italic leading-relaxed text-ink/85 sm:text-2xl">{lt(gift.message, locale)}</p>
         </Reveal>
 
         <div className={`mt-14 grid gap-8 ${gift.accounts.length > 1 ? "md:grid-cols-2" : "mx-auto max-w-md"}`}>

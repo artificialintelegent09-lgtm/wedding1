@@ -27,7 +27,7 @@ npm install
 npm run dev          # http://localhost:3000
 ```
 
-Personalise the cover for each guest with `?to=`:
+Personalise the cover for each guest with `?to=` (works in both languages):
 `http://localhost:3000/amelia-rafael/?to=Budi+Santoso`
 
 | Command | What it does |
@@ -37,7 +37,6 @@ Personalise the cover for each guest with `?to=`:
 | `npm run preview` | Serve `./out` locally (via `npx serve`) |
 | `npm run typecheck` / `npm run lint` | TypeScript and ESLint |
 | `npm run images:optimize -- <in> <out>` | Resize/compress photos and strip GPS metadata |
-| `npm run images:placeholders` | Regenerate the demo placeholder images |
 
 ## Creating an invitation
 
@@ -68,6 +67,20 @@ wishes: {
 
 **Google Form tip:** create a form with *Name* and *Message*, click Send → link icon, and paste
 the URL (`https://forms.gle/…` or `https://docs.google.com/forms/…`).
+
+## Languages
+
+The invitation ships bilingual: **Bahasa Indonesia is the default**, and guests can switch to
+English with the ID/EN toggle (top-right). Switching re-renders in place (no reload), persists in
+`localStorage`, updates `<html lang>`, and carries through everything: section titles, forms,
+validation, countdown labels, calendar menus, date formats (`20 Maret 2027` ↔ `20 March 2027`)
+and the prefilled WhatsApp RSVP/wish messages. Personal data (names, dates, numbers, addresses)
+never changes with the language.
+
+- UI strings live in `src/lib/i18n.ts` (one `Copy` dictionary per language; the type keeps them in sync).
+- Invitation content uses `LocalizedText`: a plain string, or `{ id: "…", en: "…" }` per field,
+  resolved with `lt()` — see `src/data/invitations/amelia-rafael.ts` for examples.
+- The default language per invitation is its `locale` field.
 
 ## Design system
 
@@ -113,7 +126,7 @@ Only one, and it is public: `NEXT_PUBLIC_SITE_URL` (see `.env.example`). Without
   The "Open in Google Maps" button uses the official URL scheme. No API key is needed.
 - **Responses are not collected by the site.** They arrive via WhatsApp / your form. There is no
   dashboard and no counting of RSVPs; that lives in your WhatsApp chat or Google Form.
-- **Demo photos are generated placeholders** (`public/images/demo`). Replace them with real photography.
+- **Demo photos are real wedding photography from Pexels** (free license; see `public/images/amelia-rafael/CREDITS.txt`). Replace them with the couple's own photos for a real invitation.
 - Invitations are `noindex` (private to guests); change `robots` in `src/lib/metadata.ts` if you want otherwise.
 - Cache Components / partial prefetching are not enabled: they are server-rendering features
   and are incompatible with `output: "export"`.

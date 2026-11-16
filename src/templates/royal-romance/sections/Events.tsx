@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowRight, Clock, MapPin } from "lucide-react";
+import { useInvitation } from "@/components/InvitationContext";
 import { Reveal } from "@/components/motion/Reveal";
 import { BotanicalSprig } from "@/components/ornaments/botanical-line";
 import { Rule } from "@/components/ornaments/Rule";
@@ -7,24 +10,13 @@ import { Countdown } from "@/components/ui/Countdown";
 import { OrnateFrame } from "@/components/ui/OrnateFrame";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { formatParts, formatTimeRange } from "@/lib/datetime";
+import { lt } from "@/lib/i18n";
 import type { WeddingEvent } from "@/types/invitation";
-import type { SectionProps } from "./types";
 
 /** One event as a letterpress-style card: title, big day numeral, time, venue, actions. */
-function EventCard({
-  event,
-  index,
-  total,
-  data,
-  copy,
-}: {
-  event: WeddingEvent;
-  index: number;
-  total: number;
-  data: SectionProps["data"];
-  copy: SectionProps["copy"];
-}) {
-  const parts = formatParts(event.startsAt, data.locale, event.timeZone);
+function EventCard({ event, index, total }: { event: WeddingEvent; index: number; total: number }) {
+  const { copy, locale } = useInvitation();
+  const parts = formatParts(event.startsAt, locale, event.timeZone);
   const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
@@ -36,7 +28,7 @@ function EventCard({
         {pad(index + 1)} <span className="px-1 text-gold">/</span> {pad(total)}
       </p>
       <h3 className="mt-3 font-display text-[2.4rem] font-normal italic leading-none tracking-[-0.01em] text-primary sm:text-5xl">
-        {event.title}
+        {lt(event.title, locale)}
       </h3>
 
       <Rule className="mt-6 text-gold" />
@@ -58,7 +50,7 @@ function EventCard({
       <p className="mt-7 inline-flex items-center justify-center gap-2 text-[0.82rem] font-normal tracking-[0.18em] text-ink">
         <Clock className="h-4 w-4 text-gold-deep" strokeWidth={1.4} aria-hidden="true" />
         <time dateTime={event.startsAt}>
-          {formatTimeRange(event.startsAt, event.endsAt, data.locale, event.timeZone, event.timezoneLabel)}
+          {formatTimeRange(event.startsAt, event.endsAt, locale, event.timeZone, event.timezoneLabel)}
         </time>
       </p>
 
@@ -67,11 +59,11 @@ function EventCard({
       <p className="font-display text-2xl font-normal text-primary">{event.venue.name}</p>
       <p className="mx-auto mt-2 max-w-[17rem] text-[0.88rem] font-light leading-relaxed text-muted">{event.venue.address}</p>
 
-      {event.note && <p className="mt-5 font-display text-lg font-medium italic text-ink/80">{event.note}</p>}
+      {event.note && <p className="mt-5 font-display text-lg font-medium italic text-ink/80">{lt(event.note, locale)}</p>}
       {event.dressCode && (
         <p className="mt-4 text-[0.66rem] uppercase tracking-[0.26em] text-muted">
           {copy.events.dressCode} <span className="px-1 text-gold">—</span>
-          <span className="text-primary"> {event.dressCode}</span>
+          <span className="text-primary"> {lt(event.dressCode, locale)}</span>
         </p>
       )}
 
@@ -90,7 +82,8 @@ function EventCard({
   );
 }
 
-export function Events({ data, copy }: SectionProps) {
+export function Events() {
+  const { data, copy } = useInvitation();
   return (
     <section id="events" className="surface surface-oxblood relative overflow-hidden px-5 py-24 text-paper sm:py-36">
       <BotanicalSprig bg="var(--tpl-primary)" className="pointer-events-none absolute -right-8 top-4 h-52 w-auto rotate-[14deg] text-gold-light/35 sm:right-10 sm:h-80" />
@@ -106,7 +99,7 @@ export function Events({ data, copy }: SectionProps) {
         <div className="mt-16 grid gap-10 md:grid-cols-2 md:gap-8">
           {data.events.map((event, i) => (
             <Reveal key={event.id} delay={i * 0.12} y={44} className={`h-full ${i % 2 === 1 ? "md:mt-20" : ""}`}>
-              <EventCard event={event} index={i} total={data.events.length} data={data} copy={copy} />
+              <EventCard event={event} index={i} total={data.events.length} />
             </Reveal>
           ))}
         </div>

@@ -1,12 +1,16 @@
+"use client";
+
+import { useInvitation } from "@/components/InvitationContext";
 import { getRsvpChannel } from "@/lib/contact";
+import { lt } from "@/lib/i18n";
 import { RsvpForm } from "@/components/forms/RsvpForm";
 import { Reveal } from "@/components/motion/Reveal";
 import { BotanicalSprig } from "@/components/ornaments/botanical-line";
 import { OrnateFrame } from "@/components/ui/OrnateFrame";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import type { SectionProps } from "./types";
 
-export function Rsvp({ data, copy }: SectionProps) {
+export function Rsvp() {
+  const { data, copy, locale } = useInvitation();
   if (!getRsvpChannel(data)) return null;
   return (
     <section id="rsvp" className="surface surface-aged relative overflow-hidden px-5 py-24 sm:py-36">
@@ -16,7 +20,7 @@ export function Rsvp({ data, copy }: SectionProps) {
         <SectionHeading eyebrow={copy.rsvp.eyebrow} title={copy.rsvp.title} index="07" />
         {data.rsvp?.message && (
           <Reveal className="mx-auto mt-6 max-w-md text-center">
-            <p className="font-display text-xl font-medium italic text-ink/80">{data.rsvp.message}</p>
+            <p className="font-display text-xl font-medium italic text-ink/80">{lt(data.rsvp.message, locale)}</p>
           </Reveal>
         )}
         <Reveal className="mt-12" y={36}>

@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useInvitation } from "@/components/InvitationContext";
+import { lt } from "@/lib/i18n";
 import { ImageReveal } from "@/components/motion/ImageReveal";
 import { Reveal } from "@/components/motion/Reveal";
 import { Photo } from "@/components/ui/Photo";
@@ -25,8 +26,9 @@ function Marker({ className }: { className: string }) {
 }
 
 function Moment({ moment, index }: { moment: StoryMoment; index: number }) {
+  const { locale } = useInvitation();
   const flip = index % 2 === 1;
-  const { year, rest } = splitDate(moment.date);
+  const { year, rest } = splitDate(lt(moment.date, locale));
   const portrait = index % 2 === 0;
 
   return (
@@ -53,8 +55,8 @@ function Moment({ moment, index }: { moment: StoryMoment; index: number }) {
           <p className="font-display text-[4.6rem] font-normal italic leading-[0.85] tracking-[-0.03em] text-rose sm:text-8xl">{year}</p>
         )}
         <p className="mt-3 text-[0.68rem] font-normal uppercase tracking-[0.34em] text-gold-deep">{rest}</p>
-        <h3 className="mt-3 font-display text-[1.9rem] font-normal leading-tight text-primary sm:text-4xl">{moment.title}</h3>
-        <p className={`mt-4 max-w-md text-[0.98rem] font-light leading-[1.9] text-ink/80 ${flip ? "md:ml-auto" : ""}`}>{moment.body}</p>
+        <h3 className="mt-3 font-display text-[1.9rem] font-normal leading-tight text-primary sm:text-4xl">{lt(moment.title, locale)}</h3>
+        <p className={`mt-4 max-w-md text-[0.98rem] font-light leading-[1.9] text-ink/80 ${flip ? "md:ml-auto" : ""}`}>{lt(moment.body, locale)}</p>
       </Reveal>
     </li>
   );
@@ -82,7 +84,7 @@ export function Story() {
             style={{ scaleY: reduce ? 1 : scaleY }}
           />
           {moments.map((m, i) => (
-            <Moment key={m.title} moment={m} index={i} />
+            <Moment key={i} moment={m} index={i} />
           ))}
         </ol>
       </div>

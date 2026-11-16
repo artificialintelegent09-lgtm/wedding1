@@ -1,11 +1,14 @@
+"use client";
+
 import { Clock, Navigation } from "lucide-react";
+import { useInvitation } from "@/components/InvitationContext";
 import { Reveal } from "@/components/motion/Reveal";
 import { Rule } from "@/components/ornaments/Rule";
 import { MapEmbed } from "@/components/ui/MapEmbed";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { formatTimeRange } from "@/lib/datetime";
+import { lt } from "@/lib/i18n";
 import type { Venue, WeddingEvent } from "@/types/invitation";
-import type { SectionProps } from "./types";
 
 /** Events that share a physical place are presented together under one map. */
 function groupByVenue(events: WeddingEvent[]) {
@@ -23,7 +26,8 @@ function groupByVenue(events: WeddingEvent[]) {
  * The map is a print in a paper mat; the venue details sit on a card that overlaps its edge,
  * so the information and the place read as one composition.
  */
-export function Location({ data, copy }: SectionProps) {
+export function Location() {
+  const { data, copy, locale } = useInvitation();
   const groups = groupByVenue(data.events);
 
   return (
@@ -56,12 +60,12 @@ export function Location({ data, copy }: SectionProps) {
                     <ul className="mt-5 space-y-4">
                       {events.map((e) => (
                         <li key={e.id}>
-                          <p className="font-display text-xl text-primary">{e.title}</p>
+                          <p className="font-display text-xl text-primary">{lt(e.title, locale)}</p>
                           <p className="mt-1 flex flex-wrap items-center gap-x-3 text-[0.8rem] tracking-[0.12em] text-muted">
                             {e.venue.placeName && <span>{e.venue.name}</span>}
                             <span className="inline-flex items-center gap-1.5">
                               <Clock className="h-3.5 w-3.5 text-gold-deep" strokeWidth={1.4} aria-hidden="true" />
-                              {formatTimeRange(e.startsAt, e.endsAt, data.locale, e.timeZone, e.timezoneLabel)}
+                              {formatTimeRange(e.startsAt, e.endsAt, locale, e.timeZone, e.timezoneLabel)}
                             </span>
                           </p>
                         </li>

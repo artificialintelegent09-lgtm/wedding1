@@ -1,4 +1,4 @@
-import type { Locale } from "@/types/invitation";
+import type { Locale, LocalizedText } from "@/types/invitation";
 
 /**
  * UI strings that are not part of a customer's personal content.
@@ -292,4 +292,11 @@ const dictionaries: Record<Locale, Copy> = { en, id };
 
 export function getCopy(locale: Locale): Copy {
   return dictionaries[locale];
+}
+
+/** Resolves a LocalizedText for the active locale, falling back to any available variant. */
+export function lt(text: LocalizedText | undefined, locale: Locale): string {
+  if (text === undefined) return "";
+  if (typeof text === "string") return text;
+  return text[locale] ?? text.id ?? text.en ?? "";
 }

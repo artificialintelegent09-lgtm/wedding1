@@ -1,14 +1,18 @@
+"use client";
+
 import { AtSign } from "lucide-react";
+import { useInvitation } from "@/components/InvitationContext";
 import { ImageReveal } from "@/components/motion/ImageReveal";
 import { Reveal } from "@/components/motion/Reveal";
 import { BotanicalCorner } from "@/components/ornaments/botanical-line";
 import { Rule } from "@/components/ornaments/Rule";
 import { Photo } from "@/components/ui/Photo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { lt } from "@/lib/i18n";
 import type { Person } from "@/types/invitation";
-import type { SectionProps } from "./types";
 
 function Details({ person, label, align }: { person: Person; label: string; align: "left" | "right" }) {
+  const { locale } = useInvitation();
   const right = align === "right";
   return (
     <Reveal className={`mt-8 ${right ? "text-right" : "text-left"}`}>
@@ -20,7 +24,7 @@ function Details({ person, label, align }: { person: Person; label: string; alig
         {person.fullName}
       </p>
       <Rule align="left" className={`mt-5 text-gold ${right ? "ml-auto" : ""}`} />
-      <p className="mt-5 text-[0.66rem] font-normal uppercase tracking-[0.3em] text-muted">{person.childOf}</p>
+      <p className="mt-5 text-[0.66rem] font-normal uppercase tracking-[0.3em] text-muted">{lt(person.childOf, locale)}</p>
       <p className="mt-2 font-display text-lg font-normal leading-snug text-ink">
         {person.fatherName}
         <span className="mx-2 italic text-rose-deep">&amp;</span>
@@ -46,7 +50,8 @@ function Details({ person, label, align }: { person: Person; label: string; alig
  * Two portraits, deliberately unalike: the bride in a tall arch on the left, the groom in a
  * squared frame stepped down on the right. A hairline and a ghosted ampersand tie them together.
  */
-export function Couple({ data, copy }: SectionProps) {
+export function Couple() {
+  const { data, copy } = useInvitation();
   const { bride, groom } = data.couple;
   return (
     <section id="couple" className="surface surface-aged relative overflow-hidden px-6 py-24 sm:py-36">

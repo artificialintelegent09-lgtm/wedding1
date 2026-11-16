@@ -132,7 +132,7 @@ function ExternalFormCard({ url }: { url: string }) {
 }
 
 function Quote({ wish, index }: { wish: FeaturedWish; index: number }) {
-  const { data, copy } = useInvitation();
+  const { copy, locale } = useInvitation();
   return (
     <li className="list-none">
       <Reveal delay={(index % 2) * 0.06} y={20}>
@@ -147,7 +147,7 @@ function Quote({ wish, index }: { wish: FeaturedWish; index: number }) {
             {wish.date && (
               <>
                 <span aria-hidden="true" className="h-px w-4 bg-current opacity-50" />
-                <time dateTime={wish.date}>{formatShortDate(wish.date, data.locale)}</time>
+                <time dateTime={wish.date}>{formatShortDate(wish.date, locale)}</time>
               </>
             )}
             {wish.sample && (

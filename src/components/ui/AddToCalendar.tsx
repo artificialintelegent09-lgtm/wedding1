@@ -13,7 +13,7 @@ import type { WeddingEvent } from "@/types/invitation";
  * the next card when cards are stacked on mobile.
  */
 export function AddToCalendar({ event, tone = "dark" }: { event: WeddingEvent; tone?: "dark" | "light" }) {
-  const { data, copy } = useInvitation();
+  const { data, copy, locale } = useInvitation();
   const [open, setOpen] = useState(false);
   const wrapper = useRef<HTMLDivElement>(null);
   const menuId = useId();
@@ -64,7 +64,7 @@ export function AddToCalendar({ event, tone = "dark" }: { event: WeddingEvent; t
             className="absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 border border-gold/60 bg-paper py-1 shadow-[0_20px_40px_-15px_rgba(36,8,16,0.5)]"
           >
             <a
-              href={googleCalendarUrl(event, headline)}
+              href={googleCalendarUrl(event, headline, locale)}
               target="_blank"
               rel="noopener noreferrer"
               className={itemClass}
@@ -76,7 +76,7 @@ export function AddToCalendar({ event, tone = "dark" }: { event: WeddingEvent; t
               type="button"
               className={itemClass}
               onClick={() => {
-                downloadIcs(event, headline, data.slug);
+                downloadIcs(event, headline, data.slug, locale);
                 setOpen(false);
               }}
             >

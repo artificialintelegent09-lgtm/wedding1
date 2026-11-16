@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowUp } from "lucide-react";
+import { useInvitation } from "@/components/InvitationContext";
 import { Parallax } from "@/components/motion/Parallax";
 import { Reveal } from "@/components/motion/Reveal";
 import { FloralCorner } from "@/components/ornaments/FloralCorner";
@@ -6,10 +9,11 @@ import { BotanicalSprig } from "@/components/ornaments/botanical-line";
 import { Monogram } from "@/components/ornaments/Monogram";
 import { Photo } from "@/components/ui/Photo";
 import { formatLongDate } from "@/lib/datetime";
-import type { SectionProps } from "./types";
+import { lt } from "@/lib/i18n";
 
 /** The last page: full-bleed photograph, the closing words, names large, and a final bloom. */
-export function Closing({ data, copy }: SectionProps) {
+export function Closing() {
+  const { data, copy, locale } = useInvitation();
   const { bride, groom } = data.couple;
   return (
     <section
@@ -30,8 +34,8 @@ export function Closing({ data, copy }: SectionProps) {
       <div className="relative mx-auto max-w-xl">
         <Reveal>
           <Monogram monogram={data.couple.monogram} className="mx-auto w-20 text-gold-light" />
-          <p className="mt-8 text-[0.66rem] font-normal uppercase tracking-[0.42em] text-gold-light">{data.closing.signature || copy.closing.kicker}</p>
-          <p className="mt-5 font-display text-[1.35rem] font-medium italic leading-[1.6] text-paper/90 sm:text-2xl">{data.closing.message}</p>
+          <p className="mt-8 text-[0.66rem] font-normal uppercase tracking-[0.42em] text-gold-light">{lt(data.closing.signature, locale) || copy.closing.kicker}</p>
+          <p className="mt-5 font-display text-[1.35rem] font-medium italic leading-[1.6] text-paper/90 sm:text-2xl">{lt(data.closing.message, locale)}</p>
         </Reveal>
 
         <Reveal delay={0.15} className="mt-12 border-t border-paper/25 pt-10">
@@ -41,7 +45,7 @@ export function Closing({ data, copy }: SectionProps) {
             <span className="block text-[4.2rem] italic sm:text-8xl">{groom.nickname}</span>
           </p>
           <p className="mt-8 text-[0.68rem] uppercase tracking-[0.4em] text-paper/70">
-            {formatLongDate(data.weddingDate, data.locale, data.events[0]?.timeZone ?? "UTC")}
+            {formatLongDate(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC")}
           </p>
         </Reveal>
 
