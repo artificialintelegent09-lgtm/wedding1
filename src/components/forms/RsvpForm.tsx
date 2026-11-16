@@ -64,23 +64,23 @@ export function RsvpForm() {
   if (handoffUrl) {
     return (
       <div className="py-4 text-center" role="status">
-        <MessageCircle className="mx-auto h-12 w-12 text-gold-deep" strokeWidth={1.2} aria-hidden="true" />
-        <p className="mt-4 font-display text-2xl text-primary">{copy.rsvp.handoffTitle}</p>
+        <MessageCircle className="mx-auto h-10 w-10 text-gold-deep" strokeWidth={1} aria-hidden="true" />
+        <p className="mt-4 font-display text-3xl italic text-primary">{copy.rsvp.handoffTitle}</p>
         <p className="mx-auto mt-3 max-w-xs font-light leading-relaxed text-ink/80">{copy.rsvp.handoffBody}</p>
         <a
           href={handoffUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 inline-flex min-h-12 items-center gap-2.5 rounded-full bg-primary px-7 text-sm font-medium uppercase tracking-[0.2em] text-gold-light transition-colors hover:bg-primary-soft"
+          className="mt-8 flex min-h-14 w-full items-center justify-between gap-4 bg-primary px-6 text-[0.74rem] font-normal uppercase tracking-[0.26em] text-paper transition-colors hover:bg-primary-soft"
         >
-          <MessageCircle className="h-4 w-4" aria-hidden="true" />
-          {copy.rsvp.openAgain}
+          <span>{copy.rsvp.openAgain}</span>
+          <MessageCircle className="h-4 w-4" strokeWidth={1.4} aria-hidden="true" />
         </a>
         <div>
           <button
             type="button"
             onClick={() => setHandoffUrl(null)}
-            className="mt-5 min-h-11 text-xs font-medium uppercase tracking-[0.2em] text-gold-deep underline underline-offset-4 hover:text-primary"
+            className="mt-5 min-h-11 text-[0.7rem] font-normal uppercase tracking-[0.24em] text-primary underline underline-offset-4 hover:opacity-70"
           >
             {copy.rsvp.edit}
           </button>
@@ -113,19 +113,17 @@ export function RsvpForm() {
       </Field>
 
       <fieldset aria-describedby={`${uid}-att-error`}>
-        <legend className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-primary">
+        <legend className="mb-1 text-[0.68rem] font-normal uppercase tracking-[0.28em] text-primary">
           {copy.rsvp.attendance}
         </legend>
-        <div className="grid gap-2.5 sm:grid-cols-2">
+        <div className="border-t border-ink/15">
           {options.map((o) => {
             const selected = attendance === o.value;
             return (
               <label
                 key={o.value}
-                className={`flex min-h-12 cursor-pointer items-center gap-3 border px-4 py-3 text-[0.95rem] transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-gold/60 ${
-                  selected
-                    ? "border-primary bg-primary text-gold-light"
-                    : "border-gold-deep/45 bg-white/55 text-ink hover:border-gold-deep"
+                className={`flex min-h-14 cursor-pointer items-center gap-4 border-b border-ink/15 py-3 font-display text-xl transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-1 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-gold ${
+                  selected ? "text-primary" : "text-ink/55 hover:text-ink"
                 }`}
               >
                 <input
@@ -138,11 +136,11 @@ export function RsvpForm() {
                 />
                 <span
                   aria-hidden="true"
-                  className={`grid h-4 w-4 shrink-0 place-items-center rounded-full border ${selected ? "border-gold-light" : "border-gold-deep"}`}
+                  className={`grid h-4 w-4 shrink-0 place-items-center rounded-full border ${selected ? "border-primary" : "border-ink/40"}`}
                 >
-                  {selected && <span className="h-2 w-2 rounded-full bg-gold-light" />}
+                  {selected && <span className="h-2 w-2 rounded-full bg-primary" />}
                 </span>
-                {o.label}
+                <span className={selected ? "italic" : ""}>{o.label}</span>
               </label>
             );
           })}
@@ -159,7 +157,7 @@ export function RsvpForm() {
           hint={copy.rsvp.guestsHint(channel.maxGuests)}
           error={err("guests")}
         >
-          <div className="flex items-center gap-2" role="group" aria-label={copy.rsvp.guests}>
+          <div className="mt-2 flex items-center gap-2" role="group" aria-label={copy.rsvp.guests}>
             {Array.from({ length: channel.maxGuests }, (_, i) => i + 1).map((n) => (
               <button
                 key={n}
@@ -168,8 +166,8 @@ export function RsvpForm() {
                 onClick={() => setGuests(n)}
                 className={`h-12 flex-1 border font-display text-xl transition-colors ${
                   guests === n
-                    ? "border-primary bg-primary text-gold-light"
-                    : "border-gold-deep/45 bg-white/55 text-primary hover:border-gold-deep"
+                    ? "border-primary bg-primary text-paper"
+                    : "border-ink/25 text-primary hover:border-primary"
                 }`}
               >
                 {n}
@@ -194,7 +192,9 @@ export function RsvpForm() {
         />
       </Field>
 
-      <SubmitButton idle={copy.rsvp.submit} icon={<MessageCircle className="h-4 w-4" aria-hidden="true" />} />
+      <div className="mt-4">
+        <SubmitButton idle={copy.rsvp.submit} icon={<MessageCircle className="h-4 w-4" strokeWidth={1.4} aria-hidden="true" />} />
+      </div>
 
       <p className="mt-4 text-center text-xs font-light leading-relaxed tracking-wide text-muted">
         {copy.rsvp.channelHint}

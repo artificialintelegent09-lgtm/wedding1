@@ -20,6 +20,8 @@ const en = {
     eyebrow: "Bride & Groom",
     title: "Two Hearts, One Story",
     and: "&",
+    brideLabel: "The Bride",
+    groomLabel: "The Groom",
   },
   events: {
     eyebrow: "Save the Date",
@@ -112,6 +114,9 @@ const en = {
     handoff: "WhatsApp should now be open with your message ready. Please press Send in WhatsApp to deliver it.",
     openAgain: "Open WhatsApp again",
     remaining: (n: number) => `${n} characters left`,
+    sampleTag: "Sample",
+    sampleNote: "These are sample messages for preview. Wishes sent through this invitation are delivered to the couple and are not displayed here.",
+    featuredNote: "Messages the couple chose to share",
     whatsappMessage: (p: { couple: string; name: string; message: string }) =>
       `Hello ${p.couple}! This is ${p.name}.
 My wishes for you:
@@ -158,6 +163,8 @@ const id: Copy = {
     eyebrow: "Mempelai",
     title: "Dua Hati, Satu Cerita",
     and: "&",
+    brideLabel: "Mempelai Wanita",
+    groomLabel: "Mempelai Pria",
   },
   events: {
     eyebrow: "Save the Date",
@@ -250,6 +257,9 @@ const id: Copy = {
     handoff: "WhatsApp seharusnya sudah terbuka dengan pesan Anda. Mohon tekan Kirim di WhatsApp agar terkirim.",
     openAgain: "Buka WhatsApp lagi",
     remaining: (n) => `Sisa ${n} karakter`,
+    sampleTag: "Contoh",
+    sampleNote: "Ini hanyalah contoh pesan untuk pratinjau. Ucapan yang Anda kirim lewat undangan ini diterima langsung oleh mempelai dan tidak ditampilkan di sini.",
+    featuredNote: "Pesan yang dipilih mempelai untuk dibagikan",
     whatsappMessage: (p) =>
       `Halo ${p.couple}! Saya ${p.name}.
 Ucapan dan doa untuk Anda:

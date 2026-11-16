@@ -48,26 +48,30 @@ export function FloatingNav() {
   return (
     <motion.nav
       aria-label={copy.nav.label}
-      initial={{ y: 90, opacity: 0 }}
-      animate={opened ? { y: 0, opacity: 1 } : { y: 90, opacity: 0 }}
-      transition={{ duration: 0.9, ease: luxe, delay: opened ? 1.6 : 0 }}
-      className="safe-bottom pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3"
+      initial={{ y: 80 }}
+      animate={{ y: opened ? 0 : 80 }}
+      transition={{ duration: 0.9, ease: luxe, delay: opened ? 1.8 : 0 }}
+      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-gold/35 bg-deep lg:inset-x-auto lg:bottom-5 lg:left-1/2 lg:-translate-x-1/2 lg:border"
     >
-      <ul className="pointer-events-auto flex max-w-full items-center gap-0.5 rounded-full border border-gold/45 bg-deep/85 p-1.5 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-md">
+      <ul className="mx-auto flex max-w-md items-stretch justify-between lg:max-w-none lg:gap-1 lg:px-2">
         {items.map(({ id, label, icon: Icon }) => {
           const current = active === id;
           return (
-            <li key={id}>
+            <li key={id} className="flex-1 lg:flex-none">
               <a
                 href={`#${id}`}
                 aria-label={label}
                 aria-current={current ? "location" : undefined}
-                className={`flex h-11 min-w-11 items-center justify-center gap-2 rounded-full px-3 text-xs font-medium uppercase tracking-[0.16em] transition-colors duration-300 ${
-                  current ? "bg-gold text-deep" : "text-gold-light/85 hover:bg-gold/15"
+                className={`relative flex h-14 flex-col items-center justify-center gap-1 px-2 transition-colors duration-300 lg:min-w-20 ${
+                  current ? "text-paper" : "text-gold-light/65 hover:text-paper"
                 }`}
               >
-                <Icon className="h-[1.15rem] w-[1.15rem]" strokeWidth={1.6} aria-hidden="true" />
-                <span className={current ? "hidden lg:inline" : "hidden xl:inline"}>{label}</span>
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-3 top-0 h-0.5 origin-center bg-gold transition-transform duration-500 ${current ? "scale-x-100" : "scale-x-0"}`}
+                />
+                <Icon className="h-[1.1rem] w-[1.1rem]" strokeWidth={1.4} aria-hidden="true" />
+                <span className="text-[0.52rem] font-normal uppercase tracking-[0.18em]">{label}</span>
               </a>
             </li>
           );

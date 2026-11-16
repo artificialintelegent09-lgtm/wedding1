@@ -7,7 +7,12 @@ import { useInvitation } from "@/components/InvitationContext";
 import { downloadIcs, googleCalendarUrl } from "@/lib/calendar";
 import type { WeddingEvent } from "@/types/invitation";
 
-export function AddToCalendar({ event }: { event: WeddingEvent }) {
+/**
+ * Text-style action with an underline. The menu is a small paper slip, readable on any surface.
+ * It opens upward so it stays inside its own card: a menu opening downward is painted over by
+ * the next card when cards are stacked on mobile.
+ */
+export function AddToCalendar({ event, tone = "dark" }: { event: WeddingEvent; tone?: "dark" | "light" }) {
   const { data, copy } = useInvitation();
   const [open, setOpen] = useState(false);
   const wrapper = useRef<HTMLDivElement>(null);
@@ -29,7 +34,7 @@ export function AddToCalendar({ event }: { event: WeddingEvent }) {
   }, [open]);
 
   const itemClass =
-    "flex min-h-11 w-full items-center px-5 text-left text-sm tracking-wide text-paper transition-colors hover:bg-gold/15 focus-visible:bg-gold/15";
+    "flex min-h-11 w-full items-center px-5 text-left text-sm tracking-wide text-ink transition-colors hover:bg-paper-2 focus-visible:bg-paper-2";
 
   return (
     <div ref={wrapper} className="relative inline-block">
@@ -39,9 +44,11 @@ export function AddToCalendar({ event }: { event: WeddingEvent }) {
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-gold/70 px-5 text-xs font-medium uppercase tracking-[0.2em] text-gold-light transition-colors hover:bg-gold hover:text-deep"
+        className={`inline-flex min-h-11 items-center gap-2 border-b border-current pb-0.5 text-[0.7rem] font-normal uppercase tracking-[0.24em] transition-opacity hover:opacity-70 ${
+          tone === "dark" ? "text-primary" : "text-gold-light"
+        }`}
       >
-        <CalendarPlus className="h-4 w-4" aria-hidden="true" />
+        <CalendarPlus className="h-4 w-4" strokeWidth={1.4} aria-hidden="true" />
         {copy.events.addToCalendar}
         <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden="true" />
       </button>
@@ -50,11 +57,11 @@ export function AddToCalendar({ event }: { event: WeddingEvent }) {
         {open && (
           <motion.div
             id={menuId}
-            initial={{ opacity: 0, y: -6, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-1/2 z-20 mt-2 w-64 -translate-x-1/2 overflow-hidden rounded-lg border border-gold/50 bg-deep/95 py-1 shadow-2xl shadow-black/40 backdrop-blur"
+            className="absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 border border-gold/60 bg-paper py-1 shadow-[0_20px_40px_-15px_rgba(36,8,16,0.5)]"
           >
             <a
               href={googleCalendarUrl(event, headline)}

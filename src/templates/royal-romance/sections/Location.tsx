@@ -1,6 +1,6 @@
-import { Clock, MapPin, Navigation } from "lucide-react";
+import { Clock, Navigation } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
-import { GoldDivider } from "@/components/ornaments/GoldDivider";
+import { Rule } from "@/components/ornaments/Rule";
 import { MapEmbed } from "@/components/ui/MapEmbed";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { formatTimeRange } from "@/lib/datetime";
@@ -19,58 +19,70 @@ function groupByVenue(events: WeddingEvent[]) {
   return [...groups.values()];
 }
 
+/**
+ * The map is a print in a paper mat; the venue details sit on a card that overlaps its edge,
+ * so the information and the place read as one composition.
+ */
 export function Location({ data, copy }: SectionProps) {
   const groups = groupByVenue(data.events);
 
   return (
-    <section id="location" className="grain relative bg-paper bg-damask-light px-6 py-24 sm:py-32">
-      <div className="mx-auto max-w-5xl">
-        <SectionHeading eyebrow={copy.location.eyebrow} title={copy.location.title} />
+    <section id="location" className="surface surface-paper relative overflow-hidden px-5 py-24 sm:py-36">
+      <div className="mx-auto max-w-6xl">
+        <SectionHeading eyebrow={copy.location.eyebrow} title={copy.location.title} index="03" align="left" />
 
-        <div className="mt-14 space-y-20">
+        <div className="mt-14 space-y-24">
           {groups.map(({ venue, events }) => (
-            <div key={venue.mapsQuery} className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-              <Reveal className="order-2 text-center lg:order-1 lg:text-left">
-                <MapPin className="mx-auto h-8 w-8 text-gold-deep lg:mx-0" strokeWidth={1.2} aria-hidden="true" />
-                <h3 className="mt-3 font-display text-3xl font-semibold uppercase tracking-[0.14em] text-primary sm:text-4xl">
-                  {venue.placeName ?? venue.name}
-                </h3>
-                <p className="mt-4 max-w-md font-light leading-relaxed text-ink/80 lg:max-w-sm">{venue.address}</p>
-
-                <ul className="mt-6 space-y-3 border-y border-gold-deep/25 py-5 text-left">
-                  {events.map((e) => (
-                    <li key={e.id} className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="font-display text-lg font-semibold text-primary">{e.title}</p>
-                        {e.venue.placeName && <p className="text-sm font-light text-muted">{e.venue.name}</p>}
-                      </div>
-                      <p className="inline-flex shrink-0 items-center gap-1.5 text-sm tracking-wide text-ink/80">
-                        <Clock className="h-3.5 w-3.5 text-gold-deep" aria-hidden="true" />
-                        {formatTimeRange(e.startsAt, e.endsAt, data.locale, e.timeZone, e.timezoneLabel)}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href={venue.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-7 inline-flex min-h-12 items-center gap-2.5 rounded-full bg-primary px-8 text-sm font-medium uppercase tracking-[0.22em] text-gold-light transition-colors hover:bg-primary-soft"
-                >
-                  <Navigation className="h-4 w-4" aria-hidden="true" />
-                  {copy.location.openMaps}
-                </a>
+            <div key={venue.mapsQuery} className="relative lg:grid lg:grid-cols-12 lg:items-center">
+              <Reveal className="lg:col-span-8 lg:col-start-5 lg:row-start-1">
+                <MapEmbed query={venue.mapsQuery} title={`${copy.location.mapTitle}: ${venue.name}`} />
               </Reveal>
 
-              <Reveal delay={0.1} className="order-1 lg:order-2">
-                <MapEmbed query={venue.mapsQuery} title={`${copy.location.mapTitle}: ${venue.name}`} />
+              <Reveal
+                delay={0.1}
+                y={40}
+                className="relative z-10 -mt-14 ml-3 mr-0 sm:mx-8 lg:col-span-6 lg:col-start-1 lg:row-start-1 lg:m-0 lg:-mr-24"
+              >
+                <div className="surface surface-paper relative border border-primary/20 p-7 shadow-[0_30px_60px_-35px_rgba(36,8,16,0.6)] sm:p-9">
+                  <div aria-hidden="true" className="pointer-events-none absolute inset-1.5 border border-gold/40" />
+                  <div className="relative">
+                    <h3 className="font-display text-[2.2rem] font-normal italic leading-[1.05] tracking-[-0.01em] text-primary sm:text-5xl">
+                      {venue.placeName ?? venue.name}
+                    </h3>
+                    <p className="mt-4 max-w-sm text-[0.95rem] font-light leading-relaxed text-ink/75">{venue.address}</p>
+
+                    <Rule align="left" className="mt-6 text-gold" />
+
+                    <ul className="mt-5 space-y-4">
+                      {events.map((e) => (
+                        <li key={e.id}>
+                          <p className="font-display text-xl text-primary">{e.title}</p>
+                          <p className="mt-1 flex flex-wrap items-center gap-x-3 text-[0.8rem] tracking-[0.12em] text-muted">
+                            {e.venue.placeName && <span>{e.venue.name}</span>}
+                            <span className="inline-flex items-center gap-1.5">
+                              <Clock className="h-3.5 w-3.5 text-gold-deep" strokeWidth={1.4} aria-hidden="true" />
+                              {formatTimeRange(e.startsAt, e.endsAt, data.locale, e.timeZone, e.timezoneLabel)}
+                            </span>
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <a
+                      href={venue.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group mt-8 flex min-h-14 items-center justify-between gap-4 bg-primary px-6 text-[0.74rem] font-normal uppercase tracking-[0.26em] text-paper transition-colors hover:bg-primary-soft"
+                    >
+                      <span>{copy.location.openMaps}</span>
+                      <Navigation className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.4} aria-hidden="true" />
+                    </a>
+                  </div>
+                </div>
               </Reveal>
             </div>
           ))}
         </div>
-
-        <GoldDivider className="mt-20" />
       </div>
     </section>
   );

@@ -39,7 +39,7 @@ export function Shell({ data, children }: { data: InvitationData; children: Reac
     <MotionConfig reducedMotion="user">
       <InvitationContext.Provider value={{ data, copy, opened, guestName }}>
         <AnimatePresence>{!opened && <Cover key="cover" onOpen={open} />}</AnimatePresence>
-        <main data-template="royal-romance" className="bg-paper font-sans text-ink">
+        <main data-template="royal-romance" className="bg-deep font-sans text-ink">
           {children}
         </main>
         <FloatingNav />

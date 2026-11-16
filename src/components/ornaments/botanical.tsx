@@ -13,46 +13,46 @@ export function FloralDefs() {
   return (
     <defs>
       <radialGradient id="fl-wine" cx="50%" cy="65%" r="75%">
-        <stop offset="0%" stopColor="#4d0f20" />
-        <stop offset="60%" stopColor="#8a2640" />
-        <stop offset="100%" stopColor="#b3475d" />
+        <stop offset="0%" stopColor="#34080f" />
+        <stop offset="60%" stopColor="#74192c" />
+        <stop offset="100%" stopColor="#a24558" />
       </radialGradient>
       <radialGradient id="fl-wine-in" cx="50%" cy="60%" r="80%">
-        <stop offset="0%" stopColor="#3a0a17" />
-        <stop offset="100%" stopColor="#74203a" />
+        <stop offset="0%" stopColor="#2a060c" />
+        <stop offset="100%" stopColor="#611526" />
       </radialGradient>
       <radialGradient id="fl-blush" cx="50%" cy="70%" r="75%">
-        <stop offset="0%" stopColor="#d99a96" />
-        <stop offset="65%" stopColor="#efc3bb" />
-        <stop offset="100%" stopColor="#fbe6df" />
+        <stop offset="0%" stopColor="#b98480" />
+        <stop offset="65%" stopColor="#d9b3ab" />
+        <stop offset="100%" stopColor="#f0dcd4" />
       </radialGradient>
       <radialGradient id="fl-blush-in" cx="50%" cy="60%" r="80%">
-        <stop offset="0%" stopColor="#c47f7d" />
-        <stop offset="100%" stopColor="#e9b3ad" />
+        <stop offset="0%" stopColor="#a86f6c" />
+        <stop offset="100%" stopColor="#cf9f98" />
       </radialGradient>
       <radialGradient id="fl-ivory" cx="50%" cy="70%" r="75%">
-        <stop offset="0%" stopColor="#e6cfa8" />
-        <stop offset="65%" stopColor="#f6e9d2" />
-        <stop offset="100%" stopColor="#fffaf0" />
+        <stop offset="0%" stopColor="#cdb48a" />
+        <stop offset="65%" stopColor="#efe2c8" />
+        <stop offset="100%" stopColor="#fbf5e8" />
       </radialGradient>
       <radialGradient id="fl-ivory-in" cx="50%" cy="60%" r="80%">
-        <stop offset="0%" stopColor="#d3b789" />
-        <stop offset="100%" stopColor="#f0dcb9" />
+        <stop offset="0%" stopColor="#b99f72" />
+        <stop offset="100%" stopColor="#e2d0a8" />
       </radialGradient>
       <linearGradient id="fl-gold" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stopColor="#a9812f" />
-        <stop offset="45%" stopColor="#ecd6a0" />
-        <stop offset="100%" stopColor="#b8913f" />
+        <stop offset="0%" stopColor="#8a7142" />
+        <stop offset="45%" stopColor="#d8c8a4" />
+        <stop offset="100%" stopColor="#a58b57" />
       </linearGradient>
       <linearGradient id="fl-leaf-gold" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#8f6b26" />
-        <stop offset="55%" stopColor="#d6b46a" />
-        <stop offset="100%" stopColor="#f0dba5" />
+        <stop offset="0%" stopColor="#7a6338" />
+        <stop offset="55%" stopColor="#bba679" />
+        <stop offset="100%" stopColor="#ddcfa9" />
       </linearGradient>
       <linearGradient id="fl-leaf-olive" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stopColor="#2c3320" />
-        <stop offset="60%" stopColor="#56623a" />
-        <stop offset="100%" stopColor="#7d8b57" />
+        <stop offset="0%" stopColor="#262b1e" />
+        <stop offset="60%" stopColor="#4b5638" />
+        <stop offset="100%" stopColor="#74815a" />
       </linearGradient>
     </defs>
   );
@@ -75,7 +75,7 @@ function place({ x = 0, y = 0, rotate = 0, scale = 1 }: Placement) {
 }
 
 export function Rose({ tone = "wine", ...p }: Placement & { tone?: RoseTone }) {
-  const rim = tone === "wine" ? "#e3c27d" : tone === "blush" ? "#c98a86" : "#c9a45c";
+  const rim = tone === "wine" ? "#d8c8a4" : tone === "blush" ? "#a86f6c" : "#b69d6e";
   return (
     <g transform={place(p)} opacity={p.opacity}>
       {/* soft shadow under the bloom */}
@@ -136,14 +136,14 @@ export function Leaf({
       <path
         d="M0 0C6-10 24-13 38 0 24 13 6 10 0 0Z"
         fill={`url(#fl-leaf-${tone})`}
-        stroke={tone === "gold" ? "#8f6b26" : "#2c3320"}
+        stroke={tone === "gold" ? "#7a6338" : "#262b1e"}
         strokeWidth="0.5"
         strokeOpacity="0.6"
       />
       <path
         d="M2 0C14-1 26-.5 35 0M12-.4 18-5.5M12 .4 18 5.5M21-.3 26.5-4.2M21 .3 26.5 4.2"
         fill="none"
-        stroke={tone === "gold" ? "#fff3cf" : "#c4d1a0"}
+        stroke={tone === "gold" ? "#f4ecd6" : "#b8c49a"}
         strokeWidth="0.55"
         strokeOpacity="0.55"
         strokeLinecap="round"
@@ -158,7 +158,7 @@ export function Bud({ tone = "wine", ...p }: Placement & { tone?: RoseTone }) {
       <path
         d="M0 0C-9-6-9-20 0-27 9-20 9-6 0 0Z"
         fill={`url(#fl-${tone})`}
-        stroke="#c9a45c"
+        stroke="#b69d6e"
         strokeWidth="0.6"
         strokeOpacity="0.8"
       />

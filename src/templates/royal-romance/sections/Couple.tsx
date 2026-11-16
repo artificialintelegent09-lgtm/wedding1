@@ -1,80 +1,90 @@
 import { AtSign } from "lucide-react";
 import { ImageReveal } from "@/components/motion/ImageReveal";
-import { ParallaxLayer } from "@/components/motion/Parallax";
 import { Reveal } from "@/components/motion/Reveal";
-import { FloralCorner } from "@/components/ornaments/FloralCorner";
-import { GoldDivider } from "@/components/ornaments/GoldDivider";
+import { BotanicalCorner } from "@/components/ornaments/botanical-line";
+import { Rule } from "@/components/ornaments/Rule";
 import { Photo } from "@/components/ui/Photo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { Person } from "@/types/invitation";
 import type { SectionProps } from "./types";
 
-function Profile({ person, side }: { person: Person; side: "left" | "right" }) {
+function Details({ person, label, align }: { person: Person; label: string; align: "left" | "right" }) {
+  const right = align === "right";
   return (
-    <article className="relative flex flex-col items-center text-center">
-      <div className="relative w-[min(70vw,300px)]">
-        {/* arch outlines, outside the clipped photo */}
-        <div aria-hidden="true" className="absolute -inset-2.5 rounded-t-full border border-gold/70" />
-        <div aria-hidden="true" className="absolute -inset-1 rounded-t-full border border-gold/35" />
-        <ImageReveal from={side} className="relative aspect-[3/4] rounded-t-full">
-          <Photo asset={person.photo} sizes="(min-width: 1024px) 300px, 70vw" />
-        </ImageReveal>
-      </div>
-      <Reveal className="-mt-10 w-full">
-        <div className="relative mx-auto max-w-sm bg-paper px-6 pb-2 pt-8">
-          <h3 className="font-script text-6xl leading-none text-gold-gradient sm:text-7xl">{person.nickname}</h3>
-          <p className="mt-4 font-display text-xl font-semibold uppercase tracking-[0.16em] text-primary sm:text-2xl">
-            {person.fullName}
-          </p>
-          <GoldDivider className="my-4" />
-          <p className="text-xs font-light uppercase tracking-[0.28em] text-muted">{person.childOf}</p>
-          <p className="mt-2 font-display text-lg leading-snug text-ink">
-            {person.fatherName}
-            <span className="mx-1.5 text-gold">&amp;</span>
-            {person.motherName}
-          </p>
-          {person.instagram && (
-            <a
-              href={`https://instagram.com/${person.instagram}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-sm tracking-wide text-gold-deep underline-offset-4 transition-colors hover:text-primary hover:underline"
-            >
-              <AtSign className="h-4 w-4" aria-hidden="true" />
-              {person.instagram}
-            </a>
-          )}
-        </div>
-      </Reveal>
-    </article>
+    <Reveal className={`mt-8 ${right ? "text-right" : "text-left"}`}>
+      <p className="text-[0.68rem] font-normal uppercase tracking-[0.36em] text-gold-deep">{label}</p>
+      <h3 className="mt-2 font-display text-[3.6rem] font-normal italic leading-[0.95] tracking-[-0.02em] text-primary sm:text-7xl">
+        {person.nickname}
+      </h3>
+      <p className="mt-3 font-display text-base font-normal uppercase tracking-[0.2em] text-ink/80 sm:text-lg">
+        {person.fullName}
+      </p>
+      <Rule align="left" className={`mt-5 text-gold ${right ? "ml-auto" : ""}`} />
+      <p className="mt-5 text-[0.66rem] font-normal uppercase tracking-[0.3em] text-muted">{person.childOf}</p>
+      <p className="mt-2 font-display text-lg font-normal leading-snug text-ink">
+        {person.fatherName}
+        <span className="mx-2 italic text-rose-deep">&amp;</span>
+        <br className="sm:hidden" />
+        {person.motherName}
+      </p>
+      {person.instagram && (
+        <a
+          href={`https://instagram.com/${person.instagram}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm tracking-wide text-primary underline decoration-gold underline-offset-4 transition-opacity hover:opacity-70"
+        >
+          <AtSign className="h-4 w-4" strokeWidth={1.4} aria-hidden="true" />
+          {person.instagram}
+        </a>
+      )}
+    </Reveal>
   );
 }
 
+/**
+ * Two portraits, deliberately unalike: the bride in a tall arch on the left, the groom in a
+ * squared frame stepped down on the right. A hairline and a ghosted ampersand tie them together.
+ */
 export function Couple({ data, copy }: SectionProps) {
   const { bride, groom } = data.couple;
   return (
-    <section id="couple" className="grain relative overflow-hidden bg-paper-2 px-6 py-24 sm:py-32">
-      <ParallaxLayer distance={40} className="pointer-events-none absolute -left-8 -top-2 w-32 opacity-90 sm:-left-10 sm:top-10 sm:w-80">
-        <FloralCorner className="h-auto w-full" />
-      </ParallaxLayer>
-      <ParallaxLayer distance={40} className="pointer-events-none absolute -right-10 bottom-10 w-60 -scale-100 opacity-90 sm:w-80">
-        <FloralCorner className="h-auto w-full" />
-      </ParallaxLayer>
+    <section id="couple" className="surface surface-aged relative overflow-hidden px-6 py-24 sm:py-36">
+      <BotanicalCorner bg="var(--tpl-paper-2)" className="pointer-events-none absolute -right-6 -top-6 w-44 -scale-x-100 text-gold/70 sm:w-64" />
 
-      <div className="relative mx-auto max-w-5xl">
-        <SectionHeading eyebrow={copy.couple.eyebrow} title={copy.couple.title} />
+      <div className="relative mx-auto max-w-6xl">
+        <SectionHeading eyebrow={copy.couple.eyebrow} title={copy.couple.title} index="01" align="left" />
 
-        <div className="mt-16 grid items-start gap-16 lg:grid-cols-[1fr_auto_1fr] lg:gap-8">
-          <Profile person={bride} side="left" />
+        {/* ghosted ampersand behind the portraits */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-[44%] -translate-x-1/2 select-none font-display text-[22rem] italic leading-none text-primary/[0.04] sm:text-[34rem]"
+        >
+          &amp;
+        </span>
 
-          <Reveal className="hidden self-center lg:block">
-            <span className="font-script text-8xl text-gold-gradient">{copy.couple.and}</span>
-          </Reveal>
-          <Reveal className="text-center font-script text-6xl text-gold-gradient lg:hidden">{copy.couple.and}</Reveal>
+        <div className="relative mt-16 grid gap-20 lg:grid-cols-12 lg:gap-x-8">
+          {/* bride: arch, left */}
+          <article className="lg:col-span-5">
+            <div className="relative mr-auto w-[82%] lg:w-full">
+              <div aria-hidden="true" className="absolute left-3 top-3 h-full w-full rounded-t-[999px] border border-gold/70" />
+              <ImageReveal from="bottom" className="relative aspect-[4/5] rounded-t-[999px]">
+                <Photo asset={bride.photo} sizes="(min-width: 1024px) 40vw, 82vw" />
+              </ImageReveal>
+            </div>
+            <Details person={bride} label={copy.couple.brideLabel} align="left" />
+          </article>
 
-          <div className="lg:mt-28">
-            <Profile person={groom} side="right" />
-          </div>
+          {/* groom: squared frame, right, stepped down */}
+          <article className="lg:col-span-5 lg:col-start-8 lg:mt-48">
+            <div className="relative ml-auto w-[74%] lg:w-full">
+              <div aria-hidden="true" className="absolute -left-3 top-3 h-full w-full border border-gold/70" />
+              <ImageReveal from="bottom" className="relative aspect-[3/4]">
+                <Photo asset={groom.photo} sizes="(min-width: 1024px) 40vw, 74vw" />
+              </ImageReveal>
+            </div>
+            <Details person={groom} label={copy.couple.groomLabel} align="right" />
+          </article>
         </div>
       </div>
     </section>

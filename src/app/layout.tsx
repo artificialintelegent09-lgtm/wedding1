@@ -1,22 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Jost, Pinyon_Script } from "next/font/google";
+import { Bodoni_Moda, Jost } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+// High-contrast didone serif: couple names, dates, section titles, editorial statements.
+const bodoni = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
+  axes: ["opsz"],
   display: "swap",
 });
 
-const pinyon = Pinyon_Script({
-  variable: "--font-pinyon",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
+// Clean geometric sans: body text, event details, forms, navigation.
 const jost = Jost({
   variable: "--font-jost",
   subsets: ["latin"],
@@ -31,17 +26,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#35081a",
+  themeColor: "#240810",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${cormorant.variable} ${pinyon.variable} ${jost.variable}`}
-    >
+    <html lang="en" className={`${bodoni.variable} ${jost.variable}`}>
       <body>{children}</body>
     </html>
   );

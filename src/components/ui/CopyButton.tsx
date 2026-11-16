@@ -54,12 +54,12 @@ export function CopyButton({ value, bank }: { value: string; bank: string }) {
       <button
         type="button"
         onClick={onCopy}
-        className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-full border px-5 text-xs font-medium uppercase tracking-[0.2em] transition-colors duration-300 ${
+        className={`inline-flex min-h-11 items-center justify-center gap-2 border px-5 text-[0.7rem] font-normal uppercase tracking-[0.24em] transition-colors duration-300 ${
           state === "copied"
-            ? "border-gold bg-gold text-deep"
+            ? "border-primary bg-primary text-paper"
             : state === "failed"
-              ? "border-red-300 bg-red-50 text-red-800"
-              : "border-gold-deep/60 text-primary hover:bg-primary hover:text-gold-light"
+              ? "border-red-800 bg-red-50 text-red-900"
+              : "border-primary/70 text-primary hover:bg-primary hover:text-paper"
         }`}
       >
         <Icon className="h-4 w-4" aria-hidden="true" />

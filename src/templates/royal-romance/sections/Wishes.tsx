@@ -7,9 +7,9 @@ import type { SectionProps } from "./types";
 export function Wishes({ data, copy }: SectionProps) {
   if (!showWishes(data)) return null;
   return (
-    <section id="wishes" className="grain relative bg-paper bg-damask-light px-5 py-24 sm:py-32">
+    <section id="wishes" className="surface surface-paper relative px-6 py-24 sm:py-36">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow={copy.wishes.eyebrow} title={copy.wishes.title} />
+        <SectionHeading eyebrow={copy.wishes.eyebrow} title={copy.wishes.title} index="08" align="left" />
         <Reveal className="mt-14" y={30}>
           <Guestbook />
         </Reveal>

@@ -4,28 +4,26 @@ import { motion, useInView } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 import { luxe } from "@/lib/motion";
 
-const FLOURISH = "M1 23V9C1 4.6 4.6 1 9 1h14M6 23V12c0-3.3 2.7-6 6-6h11";
+const TICK = "M1 13V1h12";
 
-function Corner({ className }: { className: string }) {
+function Tick({ className, delay }: { className: string; delay: number }) {
   return (
     <motion.svg
-      viewBox="0 0 24 24"
-      className={`absolute h-6 w-6 text-gold ${className}`}
-      initial={{ opacity: 0, scale: 0.4 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.8, ease: luxe, delay: 0.7 }}
+      viewBox="0 0 14 14"
+      className={`absolute h-3.5 w-3.5 text-gold ${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, ease: luxe, delay }}
       aria-hidden="true"
     >
-      <path d={FLOURISH} fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-      <circle cx="1.5" cy="1.5" r="1.5" fill="currentColor" />
+      <path d={TICK} fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square" />
     </motion.svg>
   );
 }
 
 /**
- * A double gold border that unfolds from the centre, with flourished corners.
- * Wrap any card-like content with it.
+ * Printed-stationery frame: a fine double rule that unfolds from the centre, with
+ * small corner ticks. Wrap any card with it; surface colour comes from `className`.
  */
 export function OrnateFrame({
   children,
@@ -38,30 +36,30 @@ export function OrnateFrame({
 }) {
   // Observe the unclipped wrapper: a clipped element can never report itself as in view.
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.15 });
-  const reveal = {
-    initial: { clipPath: "inset(50% 50% 50% 50%)" },
-    animate: { clipPath: inView ? "inset(0% 0% 0% 0%)" : "inset(50% 50% 50% 50%)" },
-  } as const;
+  const inView = useInView(ref, { once: true, amount: 0.12 });
+  const hidden = "inset(50% 50% 50% 50%)";
+  const shown = "inset(0% 0% 0% 0%)";
 
   return (
     <div ref={ref} className={`relative ${className}`}>
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 border border-gold/70"
-        {...reveal}
-        transition={{ duration: 1.3, ease: luxe }}
+        className="pointer-events-none absolute inset-2 border border-gold/70"
+        initial={{ clipPath: hidden }}
+        animate={{ clipPath: inView ? shown : hidden }}
+        transition={{ duration: 1.4, ease: luxe }}
       />
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-[7px] border border-gold/35"
-        {...reveal}
-        transition={{ duration: 1.3, ease: luxe, delay: 0.15 }}
+        className="pointer-events-none absolute inset-3.5 border border-gold/30"
+        initial={{ clipPath: hidden }}
+        animate={{ clipPath: inView ? shown : hidden }}
+        transition={{ duration: 1.4, ease: luxe, delay: 0.12 }}
       />
-      <Corner className="-left-px -top-px" />
-      <Corner className="-right-px -top-px rotate-90" />
-      <Corner className="-bottom-px -right-px rotate-180" />
-      <Corner className="-bottom-px -left-px -rotate-90" />
+      <Tick className="left-1 top-1" delay={0.9} />
+      <Tick className="right-1 top-1 rotate-90" delay={0.9} />
+      <Tick className="bottom-1 right-1 rotate-180" delay={0.9} />
+      <Tick className="bottom-1 left-1 -rotate-90" delay={0.9} />
       <div className={`relative ${innerClassName}`}>{children}</div>
     </div>
   );

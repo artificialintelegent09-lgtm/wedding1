@@ -4,7 +4,9 @@ A premium, mobile-first digital wedding invitation built with Next.js (App Route
 Tailwind CSS, Framer Motion and Lucide. It is a **fully static site**: no backend, no database,
 no server runtime. `next build` produces plain HTML/CSS/JS that any static host can serve.
 
-The flagship template is **Royal Romance** (burgundy, gold, ivory, hand-built rose ornaments).
+The flagship template is **Royal Romance**, art-directed as *Cinematic Botanical Romance*: oxblood and
+antique ivory carry the contrast, champagne gold and dusty rose are accents, with a Bodoni Moda / Jost
+type pairing, line-drawn botanicals that draw themselves in, and printed-stationery event and gift cards.
 
 ## How guest responses work (no backend)
 
@@ -12,7 +14,7 @@ The flagship template is **Royal Romance** (burgundy, gold, ivory, hand-built ro
 | --- | --- | --- |
 | **RSVP** | Guest fills the form → a prefilled `wa.me` link opens WhatsApp with the reply written out. | A WhatsApp message in the couple's chat, **once the guest presses Send**. |
 | **Wishes** | If `wishes.formUrl` is set (e.g. a Google Form) the guestbook card opens it in a new tab. Otherwise the guest writes a wish that opens in WhatsApp, prefilled. | A form response, or a WhatsApp message. |
-| **Guestbook wall** | Shows the messages listed in `wishes.featured` in the data file. | n/a: it is content you curate. |
+| **Guestbook wall** | Shows the messages listed in `wishes.featured` in the data file. Entries flagged `sample: true` get a visible "Sample" tag and an explanatory note, so demo content can never pass for real messages. | n/a: it is content you curate. |
 
 Nothing is stored by the site, and the UI never says a reply was "saved": after the WhatsApp
 hand-off it tells the guest to press **Send** in WhatsApp. To show new wishes on the wall, add
@@ -55,7 +57,7 @@ rsvp: {
 wishes: {
   formUrl: "https://forms.gle/your-form-id", // optional; https only. Omit to use WhatsApp.
   // whatsappNumber: "...",                  // optional; defaults to the RSVP number
-  featured: [{ name: "Aunt Maya", message: "…", date: "2027-01-12" }],
+  featured: [{ name: "Aunt Maya", message: "…", date: "2027-01-12" /* , sample: true for placeholders */ }],
 },
 ```
 
@@ -66,6 +68,13 @@ wishes: {
 
 **Google Form tip:** create a form with *Name* and *Message*, click Send → link icon, and paste
 the URL (`https://forms.gle/…` or `https://docs.google.com/forms/…`).
+
+## Design system
+
+- **Tokens** (palette, fonts) live in `src/app/globals.css`; sections use semantic names (`bg-primary`, `text-gold`, `bg-rose-light`…). Surfaces (`surface-paper`, `-aged`, `-rose`, `-oxblood`, `-espresso`) share one grain texture.
+- **Botanicals:** `components/ornaments/botanical-line.tsx` (line art, animated on scroll) is the everyday ornament; the filled roses in `botanical.tsx` appear only in the opening and the closing.
+- **Motion** is Framer Motion, transform/opacity/clip-path only, and honours `prefers-reduced-motion`.
+- Bodoni Moda is a variable optical-size font; see the note in `globals.css` before changing its `opsz` settings (hairlines vanish at 1x density).
 
 ## Project structure
 

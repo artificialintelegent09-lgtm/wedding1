@@ -166,27 +166,32 @@ export const amelia_rafael: InvitationData = {
     // formUrl: "https://forms.gle/your-form-id",
     //
     // Messages you want shown on the invitation. There is no database: copy the wishes you
-    // receive here and redeploy.
+    // receive here and redeploy. These four are fictional samples (flagged `sample: true`);
+    // remove the flag, or the whole entry, when you replace them with real messages.
     featured: [
       {
         name: "Aunt Maya & Uncle Dimas",
         message: "May your home be filled with laughter, patience and endless cups of tea. We are so happy for you both.",
         date: "2027-01-12",
+        sample: true,
       },
       {
         name: "Nadia Kusuma",
         message: "Amelia, you glow every time you speak of Rafael. Wishing you a lifetime of exactly that. Can't wait to dance!",
         date: "2027-01-15",
+        sample: true,
       },
       {
         name: "Reza & Tika",
         message: "Congratulations, you two! Here's to adventures, quiet Sunday mornings and growing old together.",
         date: "2027-01-20",
+        sample: true,
       },
       {
         name: "Pak Hendro",
         message: "Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallah untuk kalian berdua.",
         date: "2027-02-02",
+        sample: true,
       },
     ],
   },

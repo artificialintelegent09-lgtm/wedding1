@@ -82,7 +82,7 @@ export function Lightbox({ images, index, onChange }: LightboxProps) {
 
   const current = index !== null ? images[index] : null;
   const btn =
-    "grid h-12 w-12 place-items-center rounded-full border border-gold/50 bg-deep/70 text-gold-light backdrop-blur transition-colors hover:bg-gold hover:text-deep";
+    "grid h-11 w-11 place-items-center border border-gold/50 bg-deep text-gold-light transition-colors hover:bg-paper hover:text-deep";
 
   return createPortal(
     <AnimatePresence>
@@ -92,7 +92,7 @@ export function Lightbox({ images, index, onChange }: LightboxProps) {
           role="dialog"
           aria-modal="true"
           aria-label={copy.gallery.counter(index + 1, images.length)}
-          className="fixed inset-0 z-[100] flex flex-col bg-deep/95 backdrop-blur-md"
+          className="fixed inset-0 z-[100] flex flex-col bg-deep/[0.97]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -100,8 +100,8 @@ export function Lightbox({ images, index, onChange }: LightboxProps) {
           onClick={() => onChange(null)}
         >
           <div className="flex items-center justify-between px-4 py-3 sm:px-8">
-            <p className="font-display text-lg tracking-widest text-gold-light" aria-hidden="true">
-              {String(index + 1).padStart(2, "0")} <span className="text-gold/60">/ {String(images.length).padStart(2, "0")}</span>
+            <p className="font-display text-xl italic text-paper" aria-hidden="true">
+              {String(index + 1).padStart(2, "0")} <span className="text-gold-light/60">/ {String(images.length).padStart(2, "0")}</span>
             </p>
             <button
               ref={closeRef}
@@ -138,7 +138,7 @@ export function Lightbox({ images, index, onChange }: LightboxProps) {
                 sizes="(min-width: 1024px) 80vw, 100vw"
                 priority
                 draggable={false}
-                className="max-h-[78svh] w-auto max-w-full select-none object-contain shadow-2xl shadow-black/50"
+                className="max-h-[78svh] w-auto max-w-full select-none object-contain shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]"
               />
             </motion.div>
 
@@ -166,7 +166,7 @@ export function Lightbox({ images, index, onChange }: LightboxProps) {
             </button>
           </div>
 
-          <p className="px-4 py-4 text-center text-sm font-light tracking-wide text-paper/70">{current.alt}</p>
+          <p className="px-4 py-4 text-center text-xs font-light uppercase tracking-[0.24em] text-paper/60">{current.alt}</p>
         </motion.div>
       )}
     </AnimatePresence>,

@@ -81,6 +81,11 @@ export interface FeaturedWish {
   message: string;
   /** ISO date (YYYY-MM-DD), optional. */
   date?: string;
+  /**
+   * Mark placeholder messages. They are shown with a visible "Sample" tag so nobody
+   * mistakes them for real guest messages. Remove the flag once a message is a real one.
+   */
+  sample?: boolean;
 }
 
 export interface GalleryImage extends ImageAsset {
