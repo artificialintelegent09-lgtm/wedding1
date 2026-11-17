@@ -6,7 +6,7 @@ import { Parallax, ParallaxLayer } from "@/components/motion/Parallax";
 import { BotanicalSprig } from "@/components/ornaments/botanical-line";
 import { Monogram } from "@/components/ornaments/Monogram";
 import { Photo } from "@/components/ui/Photo";
-import { formatParts } from "@/lib/datetime";
+import { formatParts, getTimeZone } from "@/lib/datetime";
 import { luxe } from "@/lib/motion";
 
 const stagger: Variants = {
@@ -21,8 +21,8 @@ const rise: Variants = {
 export function Hero() {
   const { data, copy, opened, locale } = useInvitation();
   const { bride, groom } = data.couple;
-  const date = formatParts(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC");
-  const month = String(new Date(data.weddingDate).getUTCMonth() + 1).padStart(2, "0");
+  const date = formatParts(data.weddingDate, locale, getTimeZone(data));
+  const month = date.monthNumber;
   const state = opened ? "show" : "hidden";
 
   return (

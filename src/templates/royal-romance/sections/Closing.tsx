@@ -8,7 +8,7 @@ import { FloralCorner } from "@/components/ornaments/FloralCorner";
 import { BotanicalSprig } from "@/components/ornaments/botanical-line";
 import { Monogram } from "@/components/ornaments/Monogram";
 import { Photo } from "@/components/ui/Photo";
-import { formatLongDate } from "@/lib/datetime";
+import { formatLongDate, getTimeZone } from "@/lib/datetime";
 import { lt } from "@/lib/i18n";
 
 /** The last page: full-bleed photograph, the closing words, names large, and a final bloom. */
@@ -45,7 +45,7 @@ export function Closing() {
             <span className="block text-[4.2rem] italic sm:text-8xl">{groom.nickname}</span>
           </p>
           <p className="mt-8 text-[0.68rem] uppercase tracking-[0.4em] text-paper/70">
-            {formatLongDate(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC")}
+            {formatLongDate(data.weddingDate, locale, getTimeZone(data))}
           </p>
         </Reveal>
 

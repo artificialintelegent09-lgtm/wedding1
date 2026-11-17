@@ -121,6 +121,13 @@ export const amelia_rafael: InvitationData = {
       dressCode: { id: "Formal · Burgundy & emas", en: "Black tie · Burgundy & gold" },
     },
   ],
+  // Background music. The audio file is NOT bundled: add it at this path (see public/audio/README.txt).
+  // Until the file exists the sound control stays hidden and nothing plays.
+  music: {
+    src: "/audio/dunia-yang-nanti.mp3",
+    title: "Lagu Dunia Yang Nanti",
+    volume: 0.5,
+  },
   gallery: [
     img("gallery-1", 1600, 1067, "Amelia dan Rafael memegang buku nikah di pelaminan"),
     img("gallery-2", 1200, 1800, "Senyum bahagia saat penandatanganan buku nikah"),

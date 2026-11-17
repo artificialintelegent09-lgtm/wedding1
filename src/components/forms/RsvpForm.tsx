@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 import { useInvitation } from "@/components/InvitationContext";
 import { getRsvpChannel, whatsAppUrl } from "@/lib/contact";
-import { formatLongDate, formatShortDate } from "@/lib/datetime";
+import { formatLongDate, formatShortDate, getTimeZone } from "@/lib/datetime";
 import { fieldMessage } from "@/lib/form-messages";
 import { clean, LIMITS, validateRsvp, type FieldErrors } from "@/lib/validation";
 import { Field, inputClass, SubmitButton } from "./fields";
@@ -51,7 +51,7 @@ export function RsvpForm() {
       couple: `${bride.nickname} & ${groom.nickname}`,
       name: clean(name),
       attending: attendance === "attending",
-      date: formatLongDate(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC"),
+      date: formatLongDate(data.weddingDate, locale, getTimeZone(data)),
       guests,
       note: clean(note),
     });

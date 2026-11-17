@@ -82,6 +82,29 @@ never changes with the language.
   resolved with `lt()` — see `src/data/invitations/amelia-rafael.ts` for examples.
 - The default language per invitation is its `locale` field.
 
+## Background music
+
+The invitation is wired for background music (`music` in the data file). It starts only after the
+guest presses **Buka Undangan / Open Invitation** (browsers require a tap before sound), never on
+page load, and nothing is downloaded before that. A small speaker button in the top-right chip
+turns it off and on at any time; the choice is remembered, it pauses while the tab is in the
+background, and scrolling between sections never restarts it.
+
+**The audio file is not bundled.** Add your licensed copy at `public/audio/dunia-yang-nanti.mp3`
+(or change `music.src`). Until the file exists the speaker button is hidden and nothing plays.
+Commercial recordings are copyrighted: make sure you may use the song on a public website.
+
+## Countdown and time zones
+
+- Event times come from the data file. Prefer an explicit offset (`2027-03-20T08:00:00+07:00`):
+  it is an exact instant. A value **without** an offset is read as wall-clock time in the
+  invitation's zone (first event's `timeZone`, default **Asia/Jakarta**), never in the visitor's
+  device zone, so every guest sees the same countdown.
+- The countdown recomputes from the live clock on every second boundary. It runs from
+  `weddingDate` to the end of the last event: *counting down* → *"the celebration has begun"* →
+  *"the celebration has taken place"*. It never shows negative numbers.
+- Dates and times are always formatted in the event's zone, in the active language.
+
 ## Design system
 
 - **Tokens** (palette, fonts) live in `src/app/globals.css`; sections use semantic names (`bg-primary`, `text-gold`, `bg-rose-light`…). Surfaces (`surface-paper`, `-aged`, `-rose`, `-oxblood`, `-espresso`) share one grain texture.

@@ -9,7 +9,7 @@ import { AddToCalendar } from "@/components/ui/AddToCalendar";
 import { Countdown } from "@/components/ui/Countdown";
 import { OrnateFrame } from "@/components/ui/OrnateFrame";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { formatParts, formatTimeRange } from "@/lib/datetime";
+import { formatParts, formatTimeRange, getEventWindow } from "@/lib/datetime";
 import { lt } from "@/lib/i18n";
 import type { WeddingEvent } from "@/types/invitation";
 
@@ -84,6 +84,7 @@ function EventCard({ event, index, total }: { event: WeddingEvent; index: number
 
 export function Events() {
   const { data, copy } = useInvitation();
+  const eventWindow = getEventWindow(data);
   return (
     <section id="events" className="surface surface-oxblood relative overflow-hidden px-5 py-24 text-paper sm:py-36">
       <BotanicalSprig bg="var(--tpl-primary)" className="pointer-events-none absolute -right-8 top-4 h-52 w-auto rotate-[14deg] text-gold-light/35 sm:right-10 sm:h-80" />
@@ -92,8 +93,7 @@ export function Events() {
         <SectionHeading eyebrow={copy.events.eyebrow} title={copy.events.title} index="02" tone="light" />
 
         <Reveal className="mt-14">
-          <Countdown target={data.weddingDate} />
-          <p className="mt-5 text-center text-[0.66rem] uppercase tracking-[0.34em] text-paper/60">{copy.events.countdownLabel}</p>
+          <Countdown target={eventWindow.start} end={eventWindow.end} />
         </Reveal>
 
         <div className="mt-16 grid gap-10 md:grid-cols-2 md:gap-8">

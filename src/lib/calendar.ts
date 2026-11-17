@@ -1,9 +1,10 @@
+import { toDate } from "@/lib/datetime";
 import { lt } from "@/lib/i18n";
 import type { Locale, WeddingEvent } from "@/types/invitation";
 
-/** `2027-03-20T08:00:00+07:00` → `20270320T010000Z` */
-function toUtcStamp(iso: string): string {
-  return new Date(iso).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+/** `2027-03-20T08:00:00+07:00` → `20270320T010000Z` (an offset-less value is read in `timeZone`) */
+function toUtcStamp(iso: string, timeZone?: string): string {
+  return toDate(iso, timeZone).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 }
 
 function location(event: WeddingEvent): string {
@@ -14,7 +15,7 @@ export function googleCalendarUrl(event: WeddingEvent, headline: string, locale:
   const params = new URLSearchParams({
     action: "TEMPLATE",
     text: `${headline} · ${lt(event.title, locale)}`,
-    dates: `${toUtcStamp(event.startsAt)}/${toUtcStamp(event.endsAt)}`,
+    dates: `${toUtcStamp(event.startsAt, event.timeZone)}/${toUtcStamp(event.endsAt, event.timeZone)}`,
     location: location(event),
     details: [lt(event.note, locale), event.dressCode ? `Dress code: ${lt(event.dressCode, locale)}` : ""]
       .filter(Boolean)
@@ -53,8 +54,8 @@ export function buildIcs(event: WeddingEvent, headline: string, slug: string, lo
     "BEGIN:VEVENT",
     `UID:${slug}-${event.id}@wedding-invitation`,
     `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
-    `DTSTART:${toUtcStamp(event.startsAt)}`,
-    `DTEND:${toUtcStamp(event.endsAt)}`,
+    `DTSTART:${toUtcStamp(event.startsAt, event.timeZone)}`,
+    `DTEND:${toUtcStamp(event.endsAt, event.timeZone)}`,
     `SUMMARY:${escapeIcs(`${headline} · ${lt(event.title, locale)}`)}`,
     `LOCATION:${escapeIcs(location(event))}`,
     `DESCRIPTION:${escapeIcs([lt(event.note, locale), event.dressCode ? `Dress code: ${lt(event.dressCode, locale)}` : ""].filter(Boolean).join("\n"))}`,

@@ -3,8 +3,9 @@
 import { AnimatePresence, MotionConfig } from "framer-motion";
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { InvitationContext } from "@/components/InvitationContext";
-import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { TopControls } from "@/components/ui/TopControls";
 import { getCopy } from "@/lib/i18n";
+import { useBackgroundMusic } from "@/lib/use-background-music";
 import { useGuestName } from "@/lib/use-guest-name";
 import type { InvitationData, Locale } from "@/types/invitation";
 import { FloatingNav } from "./FloatingNav";
@@ -25,6 +26,7 @@ export function Shell({ data, children }: { data: InvitationData; children: Reac
   const [locale, setLocaleState] = useState<Locale>(data.locale);
   const guestName = useGuestName();
   const copy = getCopy(locale);
+  const music = useBackgroundMusic(data.music);
 
   useEffect(() => {
     try {
@@ -60,16 +62,19 @@ export function Shell({ data, children }: { data: InvitationData; children: Reac
     };
   }, [opened]);
 
+  // Runs inside the "open invitation" click, the user gesture that lets the browser play sound.
+  const musicStart = music.start;
   const open = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     setOpened(true);
-  }, []);
+    musicStart();
+  }, [musicStart]);
 
   return (
     // reducedMotion="user" removes transform/layout animation for people who ask for less motion.
     <MotionConfig reducedMotion="user">
       <InvitationContext.Provider value={{ data, copy, opened, guestName, locale, setLocale }}>
-        <LanguageSwitcher />
+        <TopControls music={music} />
         <AnimatePresence>{!opened && <Cover key="cover" onOpen={open} />}</AnimatePresence>
         <main data-template="royal-romance" className="bg-deep font-sans text-ink">
           {children}

@@ -7,7 +7,7 @@ import { FloralCorner } from "@/components/ornaments/FloralCorner";
 import { BotanicalCorner } from "@/components/ornaments/botanical-line";
 import { Monogram } from "@/components/ornaments/Monogram";
 import { Photo } from "@/components/ui/Photo";
-import { formatParts } from "@/lib/datetime";
+import { formatParts, getTimeZone } from "@/lib/datetime";
 import { luxe } from "@/lib/motion";
 
 const container: Variants = {
@@ -26,8 +26,8 @@ const item: Variants = {
 export function Cover({ onOpen }: { onOpen: () => void }) {
   const { data, copy, guestName, locale } = useInvitation();
   const { bride, groom } = data.couple;
-  const date = formatParts(data.weddingDate, locale, data.events[0]?.timeZone ?? "UTC");
-  const monthIndex = String(new Date(data.weddingDate).getUTCMonth() + 1).padStart(2, "0");
+  const date = formatParts(data.weddingDate, locale, getTimeZone(data));
+  const monthIndex = date.monthNumber;
 
   return (
     <motion.div
@@ -101,7 +101,7 @@ export function Cover({ onOpen }: { onOpen: () => void }) {
           </motion.h1>
 
           <motion.p variants={item} className="mt-7 font-display text-xl tracking-[0.28em] text-paper/90">
-            {date.day}<span className="px-2 text-gold">·</span>{monthIndex}<span className="px-2 text-gold">·</span>{date.year}
+            {date.dayPadded}<span className="px-2 text-gold">·</span>{monthIndex}<span className="px-2 text-gold">·</span>{date.year}
           </motion.p>
 
           <motion.div variants={item} className="mt-8 w-full max-w-xs border-t border-gold/35 pt-6">

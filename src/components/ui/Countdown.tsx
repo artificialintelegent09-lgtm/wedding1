@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useInvitation } from "@/components/InvitationContext";
+import { getTimeZone, toDate } from "@/lib/datetime";
 import { useNowSeconds } from "@/lib/use-now";
 
 function Unit({ value, label }: { value: number | null; label: string }) {
@@ -27,32 +28,51 @@ function Unit({ value, label }: { value: number | null; label: string }) {
   );
 }
 
-/** Four numerals divided by hairlines: reads at a glance on a phone. */
-export function Countdown({ target }: { target: string }) {
-  const { copy } = useInvitation();
+/**
+ * Counts down to `target` using the live clock (recomputed every second from Date.now()).
+ * Both timestamps come from the invitation data; one without a UTC offset is read in the
+ * invitation's own zone (Asia/Jakarta by default), never the visitor's device zone.
+ *
+ * Three states, never a negative number:
+ *  - before `target`: the four-unit countdown,
+ *  - from `target` until `end`: "celebration has begun",
+ *  - after `end`: a thank-you line.
+ */
+export function Countdown({ target, end }: { target: string; end?: string }) {
+  const { copy, data } = useInvitation();
+  const timeZone = getTimeZone(data);
   const now = useNowSeconds();
 
-  const remaining = now === null ? null : Math.max(0, Math.floor(new Date(target).getTime() / 1000) - now);
+  const startSec = Math.floor(toDate(target, timeZone).getTime() / 1000);
+  const endSec = end ? Math.floor(toDate(end, timeZone).getTime() / 1000) : startSec;
 
-  if (remaining === 0) {
+  // A malformed date in the data would otherwise render "NaN": show nothing instead.
+  if (!Number.isFinite(startSec)) return null;
+
+  if (now !== null && now >= startSec) {
+    const live = now < endSec;
     return (
       <p className="text-center font-display text-3xl italic text-gold-light" role="status">
-        {copy.events.started}
+        {live ? copy.events.started : copy.events.ended}
       </p>
     );
   }
 
+  const remaining = now === null ? null : startSec - now;
   const d = remaining === null ? null : Math.floor(remaining / 86400);
   const h = remaining === null ? null : Math.floor((remaining % 86400) / 3600);
   const m = remaining === null ? null : Math.floor((remaining % 3600) / 60);
   const s = remaining === null ? null : remaining % 60;
 
   return (
-    <div role="timer" aria-label={copy.events.countdownLabel} className="mx-auto grid max-w-md grid-cols-4 divide-x divide-gold/30 sm:max-w-2xl">
-      <Unit value={d} label={copy.events.days} />
-      <Unit value={h} label={copy.events.hours} />
-      <Unit value={m} label={copy.events.minutes} />
-      <Unit value={s} label={copy.events.seconds} />
-    </div>
+    <>
+      <div role="timer" aria-label={copy.events.countdownLabel} className="mx-auto grid max-w-md grid-cols-4 divide-x divide-gold/30 sm:max-w-2xl">
+        <Unit value={d} label={copy.events.days} />
+        <Unit value={h} label={copy.events.hours} />
+        <Unit value={m} label={copy.events.minutes} />
+        <Unit value={s} label={copy.events.seconds} />
+      </div>
+      <p className="mt-5 text-center text-[0.66rem] uppercase tracking-[0.34em] text-paper/60">{copy.events.countdownLabel}</p>
+    </>
   );
 }

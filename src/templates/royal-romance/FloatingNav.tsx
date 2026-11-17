@@ -13,7 +13,12 @@ interface NavItem {
   icon: LucideIcon;
 }
 
-/** Bottom navigation pill: thumb-reachable on phones, labelled on larger screens. */
+/**
+ * Floating dock: a slim burgundy slip with a fine gold double rule, inset from the screen edges
+ * so it never reads as a full-width bar. Every section is one 44px tap target; the current
+ * section is an ivory chip that also shows its label. Below 380px the label is dropped so
+ * seven icons always fit without crowding.
+ */
 export function FloatingNav() {
   const { data, copy, opened } = useInvitation();
   const [active, setActive] = useState("home");
@@ -48,30 +53,32 @@ export function FloatingNav() {
   return (
     <motion.nav
       aria-label={copy.nav.label}
-      initial={{ y: 80 }}
-      animate={{ y: opened ? 0 : 80 }}
+      initial={{ y: 90, opacity: 0 }}
+      animate={opened ? { y: 0, opacity: 1 } : { y: 90, opacity: 0 }}
       transition={{ duration: 0.9, ease: luxe, delay: opened ? 1.8 : 0 }}
-      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-gold/35 bg-deep lg:inset-x-auto lg:bottom-5 lg:left-1/2 lg:-translate-x-1/2 lg:border"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
     >
-      <ul className="mx-auto flex max-w-md items-stretch justify-between lg:max-w-none lg:gap-1 lg:px-2">
+      <ul className="pointer-events-auto relative flex w-full max-w-md items-center justify-between border border-gold/45 bg-deep p-1 shadow-[0_18px_40px_-14px_rgba(0,0,0,0.75)] lg:w-auto lg:max-w-none lg:gap-1.5 lg:p-1.5">
+        {/* second, finer rule inside the first: the stationery double border */}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-[3px] border border-gold/15" />
         {items.map(({ id, label, icon: Icon }) => {
           const current = active === id;
           return (
-            <li key={id} className="flex-1 lg:flex-none">
+            <li key={id} className="relative">
               <a
                 href={`#${id}`}
                 aria-label={label}
                 aria-current={current ? "location" : undefined}
-                className={`relative flex h-14 flex-col items-center justify-center gap-1 px-2 transition-colors duration-300 lg:min-w-20 ${
-                  current ? "text-paper" : "text-gold-light/65 hover:text-paper"
+                className={`flex h-11 items-center justify-center transition-colors duration-500 ${
+                  current ? "gap-2 bg-paper px-3 text-primary" : "w-9 text-gold-light/70 hover:text-paper lg:w-11"
                 }`}
               >
-                <span
-                  aria-hidden="true"
-                  className={`absolute inset-x-3 top-0 h-0.5 origin-center bg-gold transition-transform duration-500 ${current ? "scale-x-100" : "scale-x-0"}`}
-                />
-                <Icon className="h-[1.1rem] w-[1.1rem]" strokeWidth={1.4} aria-hidden="true" />
-                <span className="text-[0.52rem] font-normal uppercase tracking-[0.18em]">{label}</span>
+                <Icon className="h-[1.1rem] w-[1.1rem] shrink-0" strokeWidth={1.5} aria-hidden="true" />
+                {current && (
+                  <span className="hidden whitespace-nowrap text-[0.62rem] font-normal uppercase tracking-[0.18em] min-[380px]:inline">
+                    {label}
+                  </span>
+                )}
               </a>
             </li>
           );

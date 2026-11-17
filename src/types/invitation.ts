@@ -96,6 +96,19 @@ export interface FeaturedWish {
   sample?: boolean;
 }
 
+/**
+ * Background music. The file is not bundled: place it at `src` (under /public) and it
+ * starts, with the visitor's consent, when they press the cover's open button.
+ */
+export interface MusicConfig {
+  /** Public path, e.g. "/audio/dunia-yang-nanti.mp3". */
+  src: string;
+  /** Song title, for the control's accessible description. */
+  title?: LocalizedText;
+  /** 0 to 1. Defaults to 0.5. */
+  volume?: number;
+}
+
 export interface GalleryImage extends ImageAsset {
   /** Layout hint for the editorial grid. */
   layout?: "tall" | "wide" | "square";
@@ -132,6 +145,8 @@ export interface InvitationData {
     message: LocalizedText;
   };
   events: WeddingEvent[];
+  /** Optional background music (see MusicConfig). Omit to hide the sound control. */
+  music?: MusicConfig;
   gallery: GalleryImage[];
   story?: StoryMoment[];
   gift?: {
